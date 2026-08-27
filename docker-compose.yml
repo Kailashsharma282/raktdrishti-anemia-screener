@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: raktdrishti_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: raktdrishti_db
+      POSTGRES_USER: raktdrishti
+      POSTGRES_PASSWORD: raktdrishti_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U raktdrishti -d raktdrishti_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: raktdrishti_backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ENVIRONMENT: production
+      DEBUG: "False"
+      DATABASE_URL: postgresql://raktdrishti:raktdrishti_secret@postgres:5432/raktdrishti_db
+      JWT_SECRET: raktdrishti_super_secure_jwt_secret_key_change_in_production_2026
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/storage:/app/storage
+
+  dashboard:
+    image: nginx:alpine
+    container_name: raktdrishti_dashboard
+    restart: always
+    ports:
+      - "3000:80"
+    volumes:
+      - ./dashboard:/usr/share/nginx/html:ro
+
+volumes:
+  pgdata:

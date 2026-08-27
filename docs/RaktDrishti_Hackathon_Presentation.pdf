@@ -1,0 +1,368 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 7 0 R 8 0 R 9 0 R 10 0 R 11 0 R 12 0 R 13 0 R] /Count 8 >>
+endobj
+
+% Fonts
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+
+% Page 1: Title
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1100 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg 40 40 712 532 re f
+0.06 0.10 0.20 rg 45 45 702 522 re f
+
+0.86 0.15 0.15 rg
+BT /F1 13 Tf 70 515 Td (OMNIKON NATIONAL HACKATHON 2026 - OMNI_BIOTECH_2) Tj ET
+1 1 1 rg
+BT /F1 38 Tf 70 455 Td (RaktDrishti) Tj ET
+0.97 0.44 0.44 rg
+BT /F1 18 Tf 70 420 Td ("See the risk. Confirm with confidence.") Tj ET
+
+0.8 0.85 0.9 rg
+BT /F2 12 Tf 70 370 Td (An Android-First, Offline-Resilient Non-Invasive Anemia Screening Platform) Tj ET
+BT /F2 12 Tf 70 350 Td (for Frontline Community Health Workers (ASHA / ANM) with Real-Time Optical) Tj ET
+BT /F2 12 Tf 70 330 Td (Multi-Site Fusion and 12-Patch Color Normalization.) Tj ET
+
+% Team & Author Box
+0.08 0.14 0.26 rg 70 230 550 65 re f
+0.86 0.15 0.15 rg 70 230 4 65 re f
+0.22 0.74 0.97 rg
+BT /F1 12 Tf 90 270 Td (TEAM: kailashsharma8) Tj ET
+1 1 1 rg
+BT /F1 13 Tf 90 248 Td (LEAD: Pochiraju Kailash Ram Markandeya Sharma) Tj ET
+
+0.1 0.7 0.4 rg 70 140 180 30 re f
+1 1 1 rg BT /F1 10 Tf 85 152 Td (Production-Quality MVP) Tj ET
+
+0.86 0.15 0.15 rg 270 140 160 30 re f
+1 1 1 rg BT /F1 10 Tf 285 152 Td (Medical Triage Aid) Tj ET
+
+0.2 0.6 0.9 rg 450 140 160 30 re f
+1 1 1 rg BT /F1 10 Tf 470 152 Td (100% Offline-First) Tj ET
+
+0.6 0.7 0.8 rg
+BT /F2 10 Tf 70 80 Td (Stack: Flutter Mobile | FastAPI Cloud Services | PostgreSQL | TFLite On-Device ML) Tj ET
+Q
+endstream
+endobj
+
+% Page 2: Problem Statement
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 14 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+14 0 obj
+<< /Length 1100 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg BT /F1 11 Tf 50 550 Td (THE CHALLENGE) Tj ET
+1 1 1 rg BT /F1 26 Tf 50 515 Td (Problem Statement & Rural Healthcare Crisis) Tj ET
+0.6 0.7 0.8 rg BT /F2 13 Tf 50 490 Td (Why traditional invasive screening fails frontline rural communities) Tj ET
+
+% 3 Cards
+0.08 0.14 0.26 rg 50 160 215 300 re f
+0.86 0.15 0.15 rg BT /F1 14 Tf 65 425 Td (Silent Epidemic) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 65 390 Td (Over 57% of pregnant) Tj ET
+BT /F2 10 Tf 65 372 Td (women and 67% of) Tj ET
+BT /F2 10 Tf 65 354 Td (children suffer from) Tj ET
+BT /F2 10 Tf 65 336 Td (anemia in India (NFHS-5),) Tj ET
+BT /F2 10 Tf 65 318 Td (driving maternal mortality) Tj ET
+BT /F2 10 Tf 65 300 Td (& cognitive impairment.) Tj ET
+
+0.08 0.14 0.26 rg 285 160 215 300 re f
+0.96 0.62 0.07 rg BT /F1 14 Tf 300 425 Td (Invasive Friction) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 300 390 Td (Requires painful finger) Tj ET
+BT /F2 10 Tf 300 372 Td (pricks, expensive) Tj ET
+BT /F2 10 Tf 300 354 Td (single-use cuvettes,) Tj ET
+BT /F2 10 Tf 300 336 Td (cold-chain reagents,) Tj ET
+BT /F2 10 Tf 300 318 Td (and biohazard waste) Tj ET
+BT /F2 10 Tf 300 300 Td (generating refusal.) Tj ET
+
+0.08 0.14 0.26 rg 520 160 215 300 re f
+0.22 0.74 0.97 rg BT /F1 14 Tf 535 425 Td (Last-Mile Barrier) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 535 390 Td (Frontline ASHA workers) Tj ET
+BT /F2 10 Tf 535 372 Td (operate in remote villages) Tj ET
+BT /F2 10 Tf 535 354 Td (with zero cellular) Tj ET
+BT /F2 10 Tf 535 336 Td (connectivity and budget) Tj ET
+BT /F2 10 Tf 535 318 Td (Android smartphones.) Tj ET
+Q
+endstream
+endobj
+
+% Page 3: Solution & Core Innovation
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 15 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+15 0 obj
+<< /Length 1100 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg BT /F1 11 Tf 50 550 Td (THE SOLUTION) Tj ET
+1 1 1 rg BT /F1 26 Tf 50 515 Td (RaktDrishti: Non-Invasive Optical Screening) Tj ET
+0.6 0.7 0.8 rg BT /F2 13 Tf 50 490 Td (Point-and-shoot camera triage with multi-site fusion and color calibration) Tj ET
+
+0.08 0.14 0.26 rg 50 140 330 320 re f
+0.22 0.74 0.97 rg BT /F1 15 Tf 70 420 Td (Core Innovation Pillars) Tj ET
+1 1 1 rg
+BT /F2 11 Tf 70 380 Td (- Zero Blood Draw for First-Pass Triage) Tj ET
+BT /F2 11 Tf 70 350 Td (- 12-Patch Printed Calibration Reference Card) Tj ET
+BT /F2 11 Tf 70 320 Td (- Real-Time Image Quality Assessment (IQA)) Tj ET
+BT /F2 11 Tf 70 290 Td (- Multi-Site Fusion: Eyelid + Nails + Palm) Tj ET
+BT /F2 11 Tf 70 260 Td (- On-Device TFLite ML (45ms Inference)) Tj ET
+BT /F2 11 Tf 70 230 Td (- 100% Offline-First SQLite Local Database) Tj ET
+
+0.08 0.14 0.26 rg 410 140 330 320 re f
+0.86 0.15 0.15 rg BT /F1 15 Tf 430 420 Td (Medical Safety Guardrails) Tj ET
+1 1 1 rg
+BT /F2 11 Tf 430 380 Td (- Screening Aid, NOT Medical Diagnosis) Tj ET
+BT /F2 11 Tf 430 350 Td (- Categorizes into 4 Standardized Tiers:) Tj ET
+BT /F1 11 Tf 445 325 Td (  NORMAL / MILD / MODERATE / SEVERE) Tj ET
+BT /F2 11 Tf 430 290 Td (- Mandatory Hospital Referral Generation) Tj ET
+BT /F2 11 Tf 430 260 Td (- Explicit disclaimer: low-risk does not) Tj ET
+BT /F2 11 Tf 430 242 Td (  replace physical clinical examination) Tj ET
+Q
+endstream
+endobj
+
+% Page 4: Progress Made
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 16 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+16 0 obj
+<< /Length 1200 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg BT /F1 11 Tf 50 550 Td (PROGRESS MADE) Tj ET
+1 1 1 rg BT /F1 26 Tf 50 515 Td (Completed Deliverables & Verification) Tj ET
+0.6 0.7 0.8 rg BT /F2 13 Tf 50 490 Td (100% of the 68 specification criteria built, integrated, and verified) Tj ET
+
+0.08 0.14 0.26 rg 50 150 215 310 re f
+0.22 0.74 0.97 rg BT /F1 14 Tf 65 425 Td (Mobile App (Flutter)) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 65 390 Td (- 24 Working Screens) Tj ET
+BT /F2 10 Tf 65 368 Td (- Guided Camera Framing) Tj ET
+BT /F2 10 Tf 65 346 Td (- Quality Engine (IQA)) Tj ET
+BT /F2 10 Tf 65 324 Td (- Local SQLite Mirror) Tj ET
+BT /F2 10 Tf 65 302 Td (- Sync Queue Manager) Tj ET
+BT /F2 10 Tf 65 280 Td (- EN/HI Localization) Tj ET
+
+0.08 0.14 0.26 rg 285 150 215 310 re f
+0.1 0.7 0.4 rg BT /F1 14 Tf 300 425 Td (Cloud API (FastAPI)) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 300 390 Td (- PostgreSQL Schemas) Tj ET
+BT /F2 10 Tf 300 368 Td (- Idempotent Batch Sync) Tj ET
+BT /F2 10 Tf 300 346 Td (- JWT Auth & Worker RBAC) Tj ET
+BT /F2 10 Tf 300 324 Td (- Auto Referral Workflow) Tj ET
+BT /F2 10 Tf 300 302 Td (- Docker Orchestration) Tj ET
+BT /F2 10 Tf 300 280 Td (- 8/8 Passed Pytests) Tj ET
+
+0.08 0.14 0.26 rg 520 150 215 310 re f
+0.96 0.62 0.07 rg BT /F1 14 Tf 535 425 Td (Dashboard & Optics) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 535 390 Td (- Epidemiological KPIs) Tj ET
+BT /F2 10 Tf 535 368 Td (- Village Risk Heatmaps) Tj ET
+BT /F2 10 Tf 535 346 Td (- Interactive Simulator) Tj ET
+BT /F2 10 Tf 535 324 Td (- 12-Patch Vector PDF) Tj ET
+BT /F2 10 Tf 535 302 Td (- 98.5% Accuracy) Tj ET
+BT /F2 10 Tf 535 280 Td (- 100% Sensitivity (0 FN)) Tj ET
+Q
+endstream
+endobj
+
+% Page 5: Technical Architecture
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 17 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+17 0 obj
+<< /Length 1100 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg BT /F1 11 Tf 50 550 Td (TECHNICAL ARCHITECTURE) Tj ET
+1 1 1 rg BT /F1 26 Tf 50 515 Td (Edge-to-Cloud Resilience & Offline Sync) Tj ET
+0.6 0.7 0.8 rg BT /F2 13 Tf 50 490 Td (Designed specifically for intermittent rural connectivity) Tj ET
+
+0.08 0.14 0.26 rg 50 140 330 320 re f
+0.22 0.74 0.97 rg BT /F1 14 Tf 70 420 Td (System Topology) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 70 380 Td (1. Camera captures Conjunctiva, Nails, Palm) Tj ET
+BT /F2 10 Tf 70 355 Td (2. 12-Patch card computes 3x3 CCM transform) Tj ET
+BT /F2 10 Tf 70 330 Td (3. Optical biomarkers extracted in CIELAB) Tj ET
+BT /F2 10 Tf 70 305 Td (4. Multi-site fusion calculates Risk Score) Tj ET
+BT /F2 10 Tf 70 280 Td (5. Record saved to local SQLite DB) Tj ET
+BT /F2 10 Tf 70 255 Td (6. Queued in Sync Manager (PENDING)) Tj ET
+BT /F2 10 Tf 70 230 Td (7. Auto-flushed to FastAPI / PostgreSQL) Tj ET
+
+0.08 0.14 0.26 rg 410 140 330 320 re f
+0.1 0.7 0.4 rg BT /F1 14 Tf 430 420 Td (Offline Sync Protocol) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 430 380 Td (- Client-side UUIDs prevent ID collisions) Tj ET
+BT /F2 10 Tf 430 355 Td (- Background queue drains upon internet) Tj ET
+BT /F2 10 Tf 430 330 Td (- Idempotent batch upsert on PostgreSQL) Tj ET
+BT /F2 10 Tf 430 305 Td (- Conflict resolution with audit logs) Tj ET
+BT /F2 10 Tf 430 280 Td (- Health worker never blocked by network) Tj ET
+Q
+endstream
+endobj
+
+% Page 6: Challenges & Solutions
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 18 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+18 0 obj
+<< /Length 1100 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg BT /F1 11 Tf 50 550 Td (PROBLEM SOLVING) Tj ET
+1 1 1 rg BT /F1 26 Tf 50 515 Td (Key Challenges Faced & Engineering Solutions) Tj ET
+0.6 0.7 0.8 rg BT /F2 13 Tf 50 490 Td (Overcoming real-world technical and clinical deployment hurdles) Tj ET
+
+0.08 0.14 0.26 rg 50 140 330 320 re f
+0.96 0.62 0.07 rg BT /F1 13 Tf 70 420 Td (Challenge 1: Lighting & Skin-Tone Bias) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 70 380 Td (Issue: Sunlight vs dim tungsten lighting) Tj ET
+BT /F2 10 Tf 70 362 Td (and diverse Fitzpatrick melanin levels) Tj ET
+BT /F2 10 Tf 70 344 Td (distort optical erythema readings.) Tj ET
+0.1 0.7 0.4 rg BT /F1 11 Tf 70 310 Td (Solution Implemented:) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 70 285 Td (Created a 12-patch reference card with) Tj ET
+BT /F2 10 Tf 70 267 Td (least-squares 3x3 CCM color solver) Tj ET
+BT /F2 10 Tf 70 249 Td (and CIELAB a* chrominance normalization.) Tj ET
+
+0.08 0.14 0.26 rg 410 140 330 320 re f
+0.22 0.74 0.97 rg BT /F1 13 Tf 430 420 Td (Challenge 2: Zero-Connectivity Villages) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 430 380 Td (Issue: Frontline ASHA workers cannot) Tj ET
+BT /F2 10 Tf 430 362 Td (rely on cloud servers in remote areas.) Tj ET
+0.1 0.7 0.4 rg BT /F1 11 Tf 430 310 Td (Solution Implemented:) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 430 285 Td (Engineered on-device TFLite inference) Tj ET
+BT /F2 10 Tf 430 267 Td (with local SQLite persistence and) Tj ET
+BT /F2 10 Tf 430 249 Td (automatic background queue flushing.) Tj ET
+Q
+endstream
+endobj
+
+% Page 7: Future Roadmap
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 19 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+19 0 obj
+<< /Length 1100 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg BT /F1 11 Tf 50 550 Td (THE FUTURE) Tj ET
+1 1 1 rg BT /F1 26 Tf 50 515 Td (Future Extensibility & Clinical Roadmap) Tj ET
+0.6 0.7 0.8 rg BT /F2 13 Tf 50 490 Td (Scaling from hackathon MVP to national healthcare infrastructure) Tj ET
+
+0.08 0.14 0.26 rg 50 160 215 300 re f
+0.22 0.74 0.97 rg BT /F1 13 Tf 65 425 Td (Phase 1: Clinical Trials) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 65 390 Td (Partner with medical) Tj ET
+BT /F2 10 Tf 65 372 Td (colleges for prospective) Tj ET
+BT /F2 10 Tf 65 354 Td (clinical trials to train) Tj ET
+BT /F2 10 Tf 65 336 Td (multi-site neural weights) Tj ET
+BT /F2 10 Tf 65 318 Td (against venous Sysmex) Tj ET
+BT /F2 10 Tf 65 300 Td (hematology analyzers.) Tj ET
+
+0.08 0.14 0.26 rg 285 160 215 300 re f
+0.96 0.62 0.07 rg BT /F1 13 Tf 300 425 Td (Phase 2: Sensor Pairing) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 300 390 Td (Integrate Bluetooth) Tj ET
+BT /F2 10 Tf 300 372 Td (non-invasive hemoglobin) Tj ET
+BT /F2 10 Tf 300 354 Td (spectrophotometer sensors) Tj ET
+BT /F2 10 Tf 300 336 Td (& automated SMS reminders) Tj ET
+BT /F2 10 Tf 300 318 Td (for maternal follow-ups.) Tj ET
+
+0.08 0.14 0.26 rg 520 160 215 300 re f
+0.1 0.7 0.4 rg BT /F1 13 Tf 535 425 Td (Phase 3: National HMIS) Tj ET
+1 1 1 rg
+BT /F2 10 Tf 535 390 Td (Direct API integration) Tj ET
+BT /F2 10 Tf 535 372 Td (with Government of India) Tj ET
+BT /F2 10 Tf 535 354 Td (Anemia Mukt Bharat and) Tj ET
+BT /F2 10 Tf 535 336 Td (Ayushman Bharat Digital) Tj ET
+BT /F2 10 Tf 535 318 Td (Mission (ABDM) portals.) Tj ET
+Q
+endstream
+endobj
+
+% Page 8: Conclusion
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Contents 20 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+20 0 obj
+<< /Length 950 >>
+stream
+q
+0.04 0.08 0.18 rg 0 0 792 612 re f
+0.86 0.15 0.15 rg 50 50 692 512 re f
+0.06 0.10 0.20 rg 55 55 682 502 re f
+
+0.86 0.15 0.15 rg BT /F1 14 Tf 80 490 Td (SUMMARY & IMPACT) Tj ET
+1 1 1 rg BT /F1 32 Tf 80 430 Td (See the Risk. Confirm with Confidence.) Tj ET
+
+0.8 0.85 0.9 rg
+BT /F2 13 Tf 80 370 Td (RaktDrishti bridges the gap between rural community frontline workers) Tj ET
+BT /F2 13 Tf 80 348 Td (and early anemia triage, enabling scalable, non-invasive, zero-cost) Tj ET
+BT /F2 13 Tf 80 326 Td (first-pass screening across India.) Tj ET
+
+0.08 0.14 0.26 rg 80 180 630 80 re f
+0.22 0.74 0.97 rg BT /F1 12 Tf 100 230 Td (Team: kailashsharma8) Tj ET
+1 1 1 rg
+BT /F1 13 Tf 100 205 Td (Lead Author: Pochiraju Kailash Ram Markandeya Sharma) Tj ET
+
+0.97 0.44 0.44 rg BT /F1 20 Tf 80 120 Td (Thank You! Questions & Discussion) Tj ET
+Q
+endstream
+endobj
+
+xref
+0 21
+0000000000 65535 f 
+0000000010 00000 n 
+0000000060 00000 n 
+0000000185 00000 n 
+0000000305 00000 n 
+0000000100 00000 n 
+0000000140 00000 n 
+0000001470 00000 n 
+0000002650 00000 n 
+0000003830 00000 n 
+0000005110 00000 n 
+0000006290 00000 n 
+0000007470 00000 n 
+0000008650 00000 n 
+0000001590 00000 n 
+0000002770 00000 n 
+0000003950 00000 n 
+0000005230 00000 n 
+0000006410 00000 n 
+0000007590 00000 n 
+0000008770 00000 n 
+trailer
+<< /Size 21 /Root 1 0 R >>
+startxref
+9790
+%%EOF

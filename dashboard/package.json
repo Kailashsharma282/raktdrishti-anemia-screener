@@ -1,0 +1,12 @@
+{
+  "name": "raktdrishti-dashboard",
+  "version": "1.0.0",
+  "description": "Responsive Health Authority Web Dashboard for RaktDrishti Non-Invasive Anemia Screening Platform",
+  "scripts": {
+    "start": "npx serve -l 3000",
+    "dev": "npx serve -l 3000"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
