@@ -35,6 +35,10 @@
       "destination": "/dashboard/screener.html"
     },
     {
+      "source": "/screener.html",
+      "destination": "/dashboard/screener.html"
+    },
+    {
       "source": "/css/:match*",
       "destination": "/dashboard/css/:match*"
     },
