@@ -101,8 +101,8 @@ app = FastAPI(
 # Configure CORS for Dashboard and Mobile Web/Clients
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permits local dashboard and mobile dev servers
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,  # Bearer JWT auth uses Authorization header; False allows wildcard '*' without browser CORS rejection
     allow_methods=["*"],
     allow_headers=["*"],
 )
