@@ -98,24 +98,35 @@
       </div>
     </aside>
 
+    <!-- Mobile Drawer Backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <!-- Main Wrapper -->
     <div class="main-wrapper">
       <!-- Top Navbar -->
       <header class="top-header">
         <div class="header-left">
-          <h1 class="page-title" id="pageTitle">Epidemiological Command Center</h1>
-          <div class="status-pill">
-            <span class="dot"></span>
-            <span>FastAPI & PostgreSQL Online</span>
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
+            <h1 class="page-title" id="pageTitle">Epidemiological Command Center</h1>
+            <div class="status-pill">
+              <span class="dot"></span>
+              <span>FastAPI & PostgreSQL Online</span>
+            </div>
           </div>
         </div>
 
         <div class="header-actions">
+          <button class="btn btn-primary" style="background:linear-gradient(135deg, #ef4444, #b91c1c);box-shadow:0 4px 12px rgba(220,38,38,0.35);" onclick="openLiveCameraModal()">
+            <i class="fa-solid fa-camera"></i> <span>Live Camera Screening</span>
+          </button>
           <button class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7, #0369a1);box-shadow:0 4px 12px rgba(2,132,199,0.35);" onclick="window.open('screener.html', '_blank')">
-            <i class="fa-solid fa-mobile-screen-button"></i> Launch Mobile Screener Web App
+            <i class="fa-solid fa-mobile-screen-button"></i> <span>Mobile Screener App</span>
           </button>
           <button class="btn btn-outline" onclick="window.open('assets/calibration/raktdrishti_calibration_card.pdf', '_blank')">
-            <i class="fa-solid fa-file-pdf"></i> Calibration Card PDF
+            <i class="fa-solid fa-file-pdf"></i> <span>Card PDF</span>
           </button>
         </div>
       </header>
@@ -260,9 +271,14 @@
                 <h3 style="font-size:18px;font-weight:800;color:white;">⚡ Interactive Multi-Site Optical Screening Bench</h3>
                 <p style="font-size:13px;color:#94a3b8;">Simulate on-device camera capture, 12-patch calibration normalization, and TFLite multi-site fusion in real-time.</p>
               </div>
-              <button class="btn btn-primary" id="btnRunSimulator">
-                <i class="fa-solid fa-play"></i> Run Multi-Site Screening Simulation
-              </button>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button class="btn btn-primary" style="background:linear-gradient(135deg, #ef4444, #b91c1c);box-shadow:0 4px 12px rgba(220,38,38,0.35);" onclick="openLiveCameraModal()">
+                  <i class="fa-solid fa-camera"></i> Live Camera Screening
+                </button>
+                <button class="btn btn-outline" id="btnRunSimulator">
+                  <i class="fa-solid fa-play"></i> Algorithm Simulation
+                </button>
+              </div>
             </div>
 
             <!-- Controls -->
@@ -549,14 +565,95 @@
               <i class="fa-solid fa-camera-rotate" style="font-size:64px;color:#f87171;margin-bottom:16px;"></i>
               <h3 style="font-size:18px;font-weight:700;">Simulate Multi-Site Live Evaluation</h3>
               <p style="color:#94a3b8;font-size:14px;max-width:500px;margin:8px auto 20px;">Executes conjunctival erythema extraction, fingernail bed capillary perfusion, and palmar pallor scoring.</p>
-              <button class="btn btn-primary" style="padding:12px 28px;font-size:15px;" onclick="runLiveSimulationPipeline()">
-                <i class="fa-solid fa-bolt"></i> Launch Live Screening Test
-              </button>
+              <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                <button class="btn btn-primary" style="padding:12px 28px;font-size:15px;background:linear-gradient(135deg, #ef4444, #b91c1c);" onclick="openLiveCameraModal()">
+                  <i class="fa-solid fa-camera"></i> Launch Live Camera Screening
+                </button>
+                <button class="btn btn-outline" style="padding:12px 28px;font-size:15px;" onclick="runLiveSimulationPipeline()">
+                  <i class="fa-solid fa-bolt"></i> Run Algorithm Simulation
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
       </main>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-bar">
+    <div class="bottom-nav-item active" data-tab="overview">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>Overview</span>
+    </div>
+    <div class="bottom-nav-item" data-tab="patients">
+      <i class="fa-solid fa-users"></i>
+      <span>Patients</span>
+    </div>
+    <div class="bottom-nav-item" onclick="openLiveCameraModal()" style="color:#ef4444;">
+      <i class="fa-solid fa-camera" style="font-size:18px;"></i>
+      <span>Camera</span>
+    </div>
+    <div class="bottom-nav-item" data-tab="screenings">
+      <i class="fa-solid fa-stethoscope"></i>
+      <span>Screenings</span>
+    </div>
+    <div class="bottom-nav-item" data-tab="analytics">
+      <i class="fa-solid fa-chart-line"></i>
+      <span>Analytics</span>
+    </div>
+  </nav>
+
+  <!-- Live Optical Camera Screening Modal -->
+  <div id="liveCameraModal" class="camera-modal-backdrop" style="display:none;">
+    <div class="camera-modal-card">
+      <div class="camera-modal-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="live-pulse-dot"></span>
+          <div>
+            <h3 style="font-size:16px;font-weight:800;color:white;">Live Optical Camera Screening</h3>
+            <span style="font-size:11px;color:#94a3b8;">Real-time mucosal & subungual perfusion analysis</span>
+          </div>
+        </div>
+        <button class="btn-ctrl" style="padding:6px 10px;" onclick="closeLiveCameraModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Viewfinder -->
+      <div class="camera-modal-viewfinder">
+        <video id="liveModalVideo" autoplay playsinline muted class="camera-feed-video"></video>
+        <img id="liveModalFallbackImg" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80" style="display:none;" class="camera-feed-video" alt="Sample View">
+        
+        <div class="modal-camera-overlay">
+          <div class="modal-card-box">
+            <i class="fa-solid fa-qrcode"></i> 12-Patch D65 Reference Card
+          </div>
+          <div class="modal-target-reticle" id="modalReticle"></div>
+          <div class="modal-camera-badge" id="modalCameraStatusBadge">
+            <i class="fa-solid fa-video"></i> Starting Camera...
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="camera-modal-footer">
+        <div style="display:flex;gap:6px;margin-bottom:14px;justify-content:center;flex-wrap:wrap;">
+          <button class="site-chip active" id="btnModalSiteConj" onclick="setLiveModalSite('conjunctiva')">1. Conjunctiva (Eyelid)</button>
+          <button class="site-chip" id="btnModalSiteNail" onclick="setLiveModalSite('nail')">2. Fingernail Bed</button>
+          <button class="site-chip" id="btnModalSitePalm" onclick="setLiveModalSite('palm')">3. Palmar Crease</button>
+        </div>
+
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-primary" style="flex:2;padding:12px;font-size:14px;justify-content:center;" onclick="captureLiveModalFrame()">
+            <i class="fa-solid fa-camera"></i> <span id="lblModalCaptureText">Capture Live Frame & Analyze</span>
+          </button>
+          <button class="btn btn-outline" style="flex:1;padding:12px;font-size:13px;justify-content:center;" onclick="toggleLiveModalSource()">
+            <i class="fa-solid fa-camera-rotate"></i> Flip / Sample
+          </button>
+        </div>
+
+        <div id="modalAnalysisResult" style="margin-top:14px;display:none;"></div>
+      </div>
     </div>
   </div>
 
