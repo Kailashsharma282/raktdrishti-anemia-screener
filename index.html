@@ -2,17 +2,565 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=dashboard/index.html">
-  <title>RaktDrishti — Redirecting to Command Center</title>
-  <script>
-    window.location.replace("dashboard/index.html");
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RaktDrishti — Non-Invasive Anemia Screening Platform</title>
+  <meta name="description" content="Frontline non-invasive anemia risk screening platform and epidemiological health authority dashboard for Omnikon National Hackathon 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="background:#0a0e17;color:#f8fafc;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
-  <div style="text-align:center;">
-    <h1 style="color:#ef4444;margin-bottom:8px;">RaktDrishti Platform</h1>
-    <p style="color:#94a3b8;">Redirecting to Epidemiological Command Center...</p>
-    <p><a href="dashboard/index.html" style="color:#38bdf8;text-decoration:none;">Click here if not redirected automatically</a></p>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-droplet"></i>
+        </div>
+        <div>
+          <div class="brand-name">RaktDrishti</div>
+          <div class="brand-badge">OMNIKON 2026 BIOTECH</div>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <a class="nav-item active" data-tab="overview">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Overview</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="patients">
+            <i class="fa-solid fa-user-group"></i>
+            <span>Beneficiaries</span>
+            <span class="badge-count" id="badgePatientCount">5</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="screenings">
+            <i class="fa-solid fa-eye"></i>
+            <span>Screenings</span>
+            <span class="badge-count" id="badgeScreeningCount">5</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="highrisk">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>High-risk Cases</span>
+            <span class="badge-count" style="background:rgba(239,68,68,0.2);color:#f87171;" id="badgeHighRiskCount">2</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="referrals">
+            <i class="fa-solid fa-hospital-user"></i>
+            <span>Referrals</span>
+            <span class="badge-count" style="background:rgba(168,85,247,0.2);color:#c084fc;" id="badgeReferralCount">2</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="locations">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>Locations</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="analytics">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Analytics</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="simulator">
+            <i class="fa-solid fa-flask-vial"></i>
+            <span>Live ML Simulator</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" href="screener.html" target="_blank" style="background:rgba(2,132,199,0.15);border:1px dashed #0284c7;color:#38bdf8;margin-top:6px;">
+            <i class="fa-solid fa-mobile-screen-button" style="color:#38bdf8;"></i>
+            <span>Mobile Screener App</span>
+            <span class="brand-badge" style="background:rgba(2,132,199,0.25);color:#7dd3fc;border:none;">WEB</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;">
+          <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> On-Device TFLite Engine
+        </div>
+        <button class="btn btn-warning" style="width:100%;font-size:12px;" onclick="resetDemoData()">
+          <i class="fa-solid fa-rotate-left"></i> Reset Demo Cohort
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Navbar -->
+      <header class="top-header">
+        <div class="header-left">
+          <h1 class="page-title" id="pageTitle">Epidemiological Command Center</h1>
+          <div class="status-pill">
+            <span class="dot"></span>
+            <span>FastAPI & PostgreSQL Online</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7, #0369a1);box-shadow:0 4px 12px rgba(2,132,199,0.35);" onclick="window.open('screener.html', '_blank')">
+            <i class="fa-solid fa-mobile-screen-button"></i> Launch Mobile Screener Web App
+          </button>
+          <button class="btn btn-outline" onclick="window.open('assets/calibration/raktdrishti_calibration_card.pdf', '_blank')">
+            <i class="fa-solid fa-file-pdf"></i> Calibration Card PDF
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Views -->
+      <main class="page-content">
+        <!-- Medical Disclaimer Banner -->
+        <div class="disclaimer-banner">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Medical Safety Protocol:</strong> RaktDrishti is a non-invasive optical screening and triage aid, <strong>NOT a definitive diagnostic device</strong>. High and moderate risk estimations mandate confirmatory venous blood testing (CBC / Serum Ferritin) at a certified healthcare facility.
+          </div>
+        </div>
+
+        <!-- 1. TAB VIEW: OVERVIEW -->
+        <div id="view-overview" class="tab-view">
+          <!-- 8 KPI Summary Cards (Section 32) -->
+          <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <div class="kpi-card" style="--accent:#3b82f6;">
+              <div class="kpi-header">
+                <span class="kpi-title">TOTAL PATIENTS</span>
+                <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiTotalPatients">5</div>
+              <div class="kpi-subtitle">Registered across 3 villages</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#06b6d4;">
+              <div class="kpi-header">
+                <span class="kpi-title">TOTAL SCREENINGS</span>
+                <div class="kpi-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiTotalScreenings">5</div>
+              <div class="kpi-subtitle">Multi-site optical checks</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#10b981;">
+              <div class="kpi-header">
+                <span class="kpi-title">NORMAL</span>
+                <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiNormalCount" style="color:#34d399;">2</div>
+              <div class="kpi-subtitle">Routine dietary monitoring</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#f59e0b;">
+              <div class="kpi-header">
+                <span class="kpi-title">MILD RISK</span>
+                <div class="kpi-icon"><i class="fa-solid fa-info-circle"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiMildCount" style="color:#fbbf24;">1</div>
+              <div class="kpi-subtitle">Nutritional counseling</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#f97316;">
+              <div class="kpi-header">
+                <span class="kpi-title">MODERATE RISK</span>
+                <div class="kpi-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiModerateCount" style="color:#fb923c;">1</div>
+              <div class="kpi-subtitle">Referred to CHC for CBC</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#ef4444;">
+              <div class="kpi-header">
+                <span class="kpi-title">HIGH RISK</span>
+                <div class="kpi-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiSevereCount" style="color:#f87171;">1</div>
+              <div class="kpi-subtitle">Hospital triage mandated</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#8b5cf6;">
+              <div class="kpi-header">
+                <span class="kpi-title">PENDING REFERRALS</span>
+                <div class="kpi-icon"><i class="fa-solid fa-hospital"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiPendingReferrals" style="color:#c084fc;">2</div>
+              <div class="kpi-subtitle">Awaiting laboratory Hb</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#64748b;">
+              <div class="kpi-header">
+                <span class="kpi-title">PENDING SYNC</span>
+                <div class="kpi-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiPendingSync" style="color:#94a3b8;">0</div>
+              <div class="kpi-subtitle">All devices synchronized</div>
+            </div>
+          </div>
+
+          <!-- Charts Row 1 -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">Screening Activity & Triage Trends Over Time</div>
+                <span style="font-size:12px;color:#94a3b8;">Varanasi District ASHA Network</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="timelineChart"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">Population Risk Distribution</div>
+                <span style="font-size:12px;color:#94a3b8;">Proportions (%)</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="riskChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row 2 -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">Village-Level Anemia Risk Comparison</div>
+                <span style="font-size:12px;color:#94a3b8;">Geographic Aggregates</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="locationChart"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">Risk by Age Bracket</div>
+                <span style="font-size:12px;color:#94a3b8;">Demographics (%)</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="ageChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Multi-Site Screening Simulator Widget on Overview -->
+          <div class="simulator-card">
+            <div class="simulator-header">
+              <div>
+                <h3 style="font-size:18px;font-weight:800;color:white;">⚡ Interactive Multi-Site Optical Screening Bench</h3>
+                <p style="font-size:13px;color:#94a3b8;">Simulate on-device camera capture, 12-patch calibration normalization, and TFLite multi-site fusion in real-time.</p>
+              </div>
+              <button class="btn btn-primary" id="btnRunSimulator">
+                <i class="fa-solid fa-play"></i> Run Multi-Site Screening Simulation
+              </button>
+            </div>
+
+            <!-- Controls -->
+            <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:240px;">
+                <label style="font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:6px;display:block;">Select Patient / Beneficiary:</label>
+                <select id="simPatientSelect" class="search-input" style="width:100%;">
+                  <option value="p-12903-abcd-4902-8821-ananya-rao">Ananya Rao (RD-2026-0042) - 24y [ANC Pregnant]</option>
+                </select>
+              </div>
+              <div style="flex:1;min-width:240px;">
+                <label style="font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:6px;display:block;">Clinical Scenario Preset:</label>
+                <select id="simCasePreset" class="search-input" style="width:100%;">
+                  <option value="MODERATE">Scenario 1: Moderate Risk (72% Score - Second Trimester ANC)</option>
+                  <option value="SEVERE">Scenario 2: Severe Risk (88% Score - Severe Pallor & Crease Bleaching)</option>
+                  <option value="NORMAL">Scenario 3: Normal Risk (22% Score - Healthy Mucosal Perfusion)</option>
+                  <option value="MILD">Scenario 4: Mild Risk (48% Score - Dietary Counseling)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Pipeline 5 Steps Visualizer -->
+            <div class="sim-steps">
+              <div class="sim-step-item" id="simStep1">
+                <div class="sim-step-icon"><i class="fa-solid fa-barcode"></i></div>
+                <div class="sim-step-title">1. Calibration Card</div>
+                <div class="sim-step-desc">12-Patch D65 Lock</div>
+              </div>
+              <div class="sim-step-item" id="simStep2">
+                <div class="sim-step-icon"><i class="fa-solid fa-eye"></i></div>
+                <div class="sim-step-title">2. Conjunctiva</div>
+                <div class="sim-step-desc">Erythema Index</div>
+              </div>
+              <div class="sim-step-item" id="simStep3">
+                <div class="sim-step-icon"><i class="fa-solid fa-hand-dots"></i></div>
+                <div class="sim-step-title">3. Nail Beds</div>
+                <div class="sim-step-desc">Capillary Perfusion</div>
+              </div>
+              <div class="sim-step-item" id="simStep4">
+                <div class="sim-step-icon"><i class="fa-solid fa-hand"></i></div>
+                <div class="sim-step-title">4. Open Palm</div>
+                <div class="sim-step-desc">Crease Contrast</div>
+              </div>
+              <div class="sim-step-item" id="simStep5">
+                <div class="sim-step-icon"><i class="fa-solid fa-brain"></i></div>
+                <div class="sim-step-title">5. Fusion ML</div>
+                <div class="sim-step-desc">TFLite Triage</div>
+              </div>
+            </div>
+
+            <!-- Pipeline Console Terminal Output -->
+            <div class="sim-console" id="simConsole">
+              <div>[Ready] RaktDrishti Multi-Site Optical Engine Initialized.</div>
+              <div>[Info] Ready to simulate camera capture and live on-device neural fusion. Click "Run Multi-Site Screening Simulation".</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. TAB VIEW: PATIENTS -->
+        <div id="view-patients" class="tab-view" style="display:none;">
+          <div class="table-card">
+            <div class="table-header">
+              <h2 style="font-size:18px;font-weight:700;">Beneficiary Directory</h2>
+              <input type="text" class="search-input" placeholder="Search by name, ID, village..." oninput="filterPatientsTable(this.value)">
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Patient Code</th>
+                    <th>Name</th>
+                    <th>Demographics</th>
+                    <th>Maternal / ANC</th>
+                    <th>Village</th>
+                    <th>Latest Risk</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="patientsTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. TAB VIEW: SCREENINGS -->
+        <div id="view-screenings" class="tab-view" style="display:none;">
+          <div class="table-card">
+            <div class="table-header">
+              <h2 style="font-size:18px;font-weight:700;">Multi-Site Screening Logs</h2>
+              <span style="font-size:12px;color:#94a3b8;">All optical telemetry stored with model versioning</span>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Beneficiary</th>
+                    <th>Risk Category</th>
+                    <th>Risk Score</th>
+                    <th>Confidence</th>
+                    <th>Quality</th>
+                    <th>Referral Status</th>
+                  </tr>
+                </thead>
+                <tbody id="screeningsTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. TAB VIEW: HIGH-RISK CASES (Section 31) -->
+        <div id="view-highrisk" class="tab-view" style="display:none;">
+          <div class="table-card">
+            <div class="table-header">
+              <div>
+                <h2 style="font-size:18px;font-weight:700;color:#f87171;">⚠️ High & Moderate Risk Triage Queue</h2>
+                <span style="font-size:12px;color:#94a3b8;">Beneficiaries flagged for confirmatory laboratory venous blood testing</span>
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Beneficiary</th>
+                    <th>Risk Category</th>
+                    <th>Risk Score</th>
+                    <th>Confidence</th>
+                    <th>Quality</th>
+                    <th>Referral Action</th>
+                  </tr>
+                </thead>
+                <tbody id="highRiskTableBody">
+                  <!-- Dynamically populated with moderate/severe only -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. TAB VIEW: REFERRALS -->
+        <div id="view-referrals" class="tab-view" style="display:none;">
+          <div class="table-card">
+            <div class="table-header">
+              <h2 style="font-size:18px;font-weight:700;">Laboratory Referral Tracking (CHC / PHC)</h2>
+              <span style="font-size:12px;color:#94a3b8;">Mandatory confirmatory venous testing follow-up</span>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Beneficiary</th>
+                    <th>Referral Facility</th>
+                    <th>Urgency</th>
+                    <th>Status</th>
+                    <th>Lab Confirmed Hb</th>
+                    <th>Clinical Notes</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="referralsTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. TAB VIEW: LOCATIONS -->
+        <div id="view-locations" class="tab-view" style="display:none;">
+          <div class="table-card">
+            <div class="table-header">
+              <h2 style="font-size:18px;font-weight:700;">Village & Ward Epidemiological Heatmaps</h2>
+              <span style="font-size:12px;color:#94a3b8;">Location-tagged anemia risk distribution (No household coordinates exposed)</span>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Village</th>
+                    <th>District</th>
+                    <th>Total Screenings</th>
+                    <th>Severe Cases</th>
+                    <th>Moderate Cases</th>
+                    <th>Normal Cases</th>
+                    <th>Elevated Risk %</th>
+                  </tr>
+                </thead>
+                <tbody id="locationTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. TAB VIEW: ANALYTICS (Section 31 & 33) -->
+        <div id="view-analytics" class="tab-view" style="display:none;">
+          <div style="margin-bottom:20px;">
+            <h2 style="font-size:20px;font-weight:800;color:white;">Epidemiological Intelligence & Demographic Analytics</h2>
+            <p style="font-size:13px;color:#94a3b8;">Population health surveillance, risk trends over time, age distributions, and maternal vulnerability monitoring.</p>
+          </div>
+
+          <!-- 6 Section 33 Charts Grid -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">1. Population Risk Distribution</div>
+                <span style="font-size:12px;color:#94a3b8;">Normal / Mild / Mod / Severe (%)</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="riskChartAnalytics"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">2. Screenings Activity Over Time</div>
+                <span style="font-size:12px;color:#94a3b8;">Daily Triage Velocity</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="timelineChartAnalytics"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="charts-grid" style="margin-top:20px;">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">3. Referrals & Lab Confirmation Over Time</div>
+                <span style="font-size:12px;color:#94a3b8;">Hospital Triage Follow-up</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="referralsChart"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">4. Risk Distribution by Location</div>
+                <span style="font-size:12px;color:#94a3b8;">Village & Ward Comparison</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="locationChartAnalytics"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="charts-grid" style="margin-top:20px;">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">5. Anemia Risk by Age Groups</div>
+                <span style="font-size:12px;color:#94a3b8;">0–5, 6–12, 13–18, 19–30, 31–45, 46+</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="ageChartAnalytics"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">6. Maternal (ANC) & Pregnancy Status Risk</div>
+                <span style="font-size:12px;color:#94a3b8;">Maternal Vulnerability Stratification</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="pregnancyChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. TAB VIEW: SIMULATOR -->
+        <div id="view-simulator" class="tab-view" style="display:none;">
+          <!-- Simulator Dedicated View -->
+          <div class="simulator-card" style="margin-bottom:0;">
+            <h2 style="font-size:22px;font-weight:800;color:white;margin-bottom:12px;">Interactive ML Pipeline & Camera Simulator</h2>
+            <p style="color:#94a3b8;margin-bottom:24px;">Experience the end-to-end optical triage flow: from 12-patch reference card calibration to on-device multi-site fusion and cloud synchronization.</p>
+            
+            <div style="text-align:center;padding:40px;background:rgba(0,0,0,0.3);border-radius:16px;margin-bottom:24px;">
+              <i class="fa-solid fa-camera-rotate" style="font-size:64px;color:#f87171;margin-bottom:16px;"></i>
+              <h3 style="font-size:18px;font-weight:700;">Simulate Multi-Site Live Evaluation</h3>
+              <p style="color:#94a3b8;font-size:14px;max-width:500px;margin:8px auto 20px;">Executes conjunctival erythema extraction, fingernail bed capillary perfusion, and palmar pallor scoring.</p>
+              <button class="btn btn-primary" style="padding:12px 28px;font-size:15px;" onclick="runLiveSimulationPipeline()">
+                <i class="fa-solid fa-bolt"></i> Launch Live Screening Test
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
   </div>
+
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
