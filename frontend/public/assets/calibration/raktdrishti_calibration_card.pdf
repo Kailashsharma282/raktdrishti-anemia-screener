@@ -1,0 +1,125 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 396] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 2100 >>
+stream
+q
+% Background and border
+1 1 1 rg 0 0 612 396 re f
+0.8 0.84 0.88 RG 2 w 10 10 592 376 re S
+0.96 0.97 0.98 rg 20 20 572 356 re f
+0.88 0.91 0.94 RG 1 w 20 20 572 356 re S
+
+% Header
+0.86 0.15 0.15 rg
+BT /F1 16 Tf 40 350 Td (RaktDrishti (TM) Calibration Reference Card) Tj ET
+0.2 0.2 0.2 rg
+BT /F2 9 Tf 40 338 Td (OMNIKON 2026 BIOTECH - NON-INVASIVE ANEMIA SCREENING AID) Tj ET
+
+% Row 1 Patches
+% White (95%)
+0.95 0.95 0.95 rg 40 250 75 55 re f
+0.6 0.6 0.6 RG 1 w 40 250 75 55 re S
+0.1 0.1 0.1 rg BT /F1 8 Tf 50 274 Td (WHITE 95%) Tj ET
+
+% Neutral Gray 18%
+0.467 0.467 0.467 rg 125 250 75 55 re f
+1 1 1 rg BT /F1 8 Tf 135 274 Td (GRAY 18%) Tj ET
+
+% Black (5%)
+0.05 0.05 0.05 rg 210 250 75 55 re f
+1 1 1 rg BT /F1 8 Tf 223 274 Td (BLACK 5%) Tj ET
+
+% Red
+0.827 0.184 0.184 rg 295 250 75 55 re f
+1 1 1 rg BT /F1 8 Tf 320 274 Td (RED) Tj ET
+
+% Green
+0.22 0.557 0.235 rg 380 250 75 55 re f
+1 1 1 rg BT /F1 8 Tf 400 274 Td (GREEN) Tj ET
+
+% Blue
+0.098 0.463 0.824 rg 465 250 75 55 re f
+1 1 1 rg BT /F1 8 Tf 490 274 Td (BLUE) Tj ET
+
+% Row 2 Patches (Skin tones and Vascularity)
+% Skin I-II
+0.988 0.898 0.847 rg 40 180 75 55 re f
+0.2 0.2 0.2 rg BT /F1 8 Tf 48 204 Td (SKIN I-II) Tj ET
+
+% Skin III
+0.886 0.675 0.537 rg 125 180 75 55 re f
+0.2 0.2 0.2 rg BT /F1 8 Tf 135 204 Td (SKIN III) Tj ET
+
+% Skin IV
+0.741 0.545 0.404 rg 210 180 75 55 re f
+1 1 1 rg BT /F1 8 Tf 222 204 Td (SKIN IV) Tj ET
+
+% Skin V
+0.553 0.333 0.141 rg 295 180 75 55 re f
+1 1 1 rg BT /F1 8 Tf 308 204 Td (SKIN V) Tj ET
+
+% Erythema Ref
+0.898 0.451 0.451 rg 380 180 75 55 re f
+1 1 1 rg BT /F1 8 Tf 392 204 Td (ERYTHEMA) Tj ET
+
+% Pallor Ref
+0.973 0.733 0.816 rg 465 180 75 55 re f
+0.2 0.2 0.2 rg BT /F1 8 Tf 480 204 Td (PALLOR) Tj ET
+
+% Instructions Box
+0.94 0.96 0.98 rg 40 85 500 80 re f
+0.8 0.85 0.9 RG 1 w 40 85 500 80 re S
+0.1 0.15 0.2 rg BT /F1 9 Tf 50 150 Td (Frontline Health Worker Instructions (ASHA / ANM / Anganwadi):) Tj ET
+0.25 0.3 0.35 rg
+BT /F2 8 Tf 50 136 Td (1. Position this reference card beside the eye conjunctiva, fingernails, or palm.) Tj ET
+BT /F2 8 Tf 50 123 Td (2. Keep all color patches and corner markers visible and unshadowed in camera frame.) Tj ET
+BT /F2 8 Tf 50 110 Td (3. Hold device ~15-20 cm away under indirect ambient lighting. Avoid flash glare.) Tj ET
+0.86 0.15 0.15 rg
+BT /F1 8 Tf 50 95 Td (IMPORTANT: Print at 100% scale (Do NOT fit-to-page). Validated screening aid.) Tj ET
+
+% 50mm ruler
+0.2 0.2 0.2 RG 1.5 w
+40 50 m 181.7 50 l S
+40 45 m 40 55 l S
+68.3 47 m 68.3 53 l S
+96.7 47 m 96.7 53 l S
+125.0 47 m 125.0 53 l S
+153.3 47 m 153.3 53 l S
+181.7 45 m 181.7 55 l S
+0.3 0.3 0.3 rg BT /F2 7 Tf 40 35 Td (0cm   1cm   2cm   3cm   4cm   5cm (Physical 50 mm Scale)) Tj ET
+
+% Checksum
+0.5 0.5 0.5 rg BT /F2 7 Tf 320 40 Td (CARD-ID: RD-CALIB-2026-V1.0 | MATRIX: D65-sRGB | SCALE: 100%) Tj ET
+
+Q
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000010 00000 n 
+0000000060 00000 n 
+00000000118 00000 n 
+0000000350 00000 n 
+0000000240 00000 n 
+0000000295 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+2510
+%%EOF

@@ -53,6 +53,11 @@ mobile/.flutter-plugins-dependencies
 *.swp
 *.swo
 
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
 # OS files
 .DS_Store
 Thumbs.db
