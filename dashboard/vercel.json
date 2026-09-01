@@ -1,6 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "outputDirectory": "dashboard",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
@@ -30,10 +29,6 @@
     {
       "source": "/screener",
       "destination": "/screener.html"
-    },
-    {
-      "source": "/dashboard/:match*",
-      "destination": "/:match*"
     }
   ]
 }
