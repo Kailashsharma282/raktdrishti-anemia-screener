@@ -7,8 +7,8 @@ from backend.app.database import Base
 class SyncEvent(Base):
     __tablename__ = "sync_events"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    worker_id = Column(String(36), ForeignKey("workers.id"), nullable=True)
+    id = Column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    worker_id = Column(String(64), ForeignKey("workers.id"), nullable=True)
     device_id = Column(String(100), nullable=True)
     client_timestamp = Column(DateTime, nullable=True)
     

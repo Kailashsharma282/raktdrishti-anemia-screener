@@ -7,10 +7,10 @@ from backend.app.database import Base
 class Referral(Base):
     __tablename__ = "referrals"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    screening_id = Column(String(36), ForeignKey("screenings.id"), nullable=False, unique=True)
-    patient_id = Column(String(36), ForeignKey("patients.id"), nullable=False, index=True)
-    worker_id = Column(String(36), ForeignKey("workers.id"), nullable=True)
+    id = Column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    screening_id = Column(String(64), ForeignKey("screenings.id"), nullable=False, unique=True)
+    patient_id = Column(String(64), ForeignKey("patients.id"), nullable=False, index=True)
+    worker_id = Column(String(64), ForeignKey("workers.id"), nullable=True)
     
     referral_facility = Column(String(150), nullable=False)  # CHC, PHC, District Hospital
     urgency = Column(String(20), default="high")  # routine, high, immediate

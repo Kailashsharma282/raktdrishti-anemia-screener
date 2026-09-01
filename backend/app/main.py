@@ -1,3 +1,4 @@
+import sqlalchemy as sa
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,11 +21,56 @@ from backend.app.utils.seed_data import seed_initial_data
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: create tables and seed synthetic initial demo dataset
+    # Startup: create tables
     Base.metadata.create_all(bind=engine)
+
+    # If running on PostgreSQL (e.g. Render), ensure column lengths are at least VARCHAR(64)
+    # in case tables were pre-created with VARCHAR(36) in an earlier deployment attempt.
+    try:
+        if engine.dialect.name == "postgresql":
+            with engine.connect() as conn:
+                alter_stmts = [
+                    "ALTER TABLE users ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE workers ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE workers ALTER COLUMN user_id TYPE VARCHAR(64);",
+                    "ALTER TABLE patients ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE patients ALTER COLUMN worker_id TYPE VARCHAR(64);",
+                    "ALTER TABLE patients ALTER COLUMN location_id TYPE VARCHAR(64);",
+                    "ALTER TABLE patients ALTER COLUMN created_by TYPE VARCHAR(64);",
+                    "ALTER TABLE locations ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE screenings ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE screenings ALTER COLUMN patient_id TYPE VARCHAR(64);",
+                    "ALTER TABLE screenings ALTER COLUMN worker_id TYPE VARCHAR(64);",
+                    "ALTER TABLE screening_images ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE screening_images ALTER COLUMN screening_id TYPE VARCHAR(64);",
+                    "ALTER TABLE screening_predictions ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE screening_predictions ALTER COLUMN screening_id TYPE VARCHAR(64);",
+                    "ALTER TABLE referrals ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE referrals ALTER COLUMN screening_id TYPE VARCHAR(64);",
+                    "ALTER TABLE referrals ALTER COLUMN patient_id TYPE VARCHAR(64);",
+                    "ALTER TABLE referrals ALTER COLUMN worker_id TYPE VARCHAR(64);",
+                    "ALTER TABLE sync_events ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE sync_events ALTER COLUMN worker_id TYPE VARCHAR(64);",
+                    "ALTER TABLE audit_logs ALTER COLUMN id TYPE VARCHAR(64);",
+                    "ALTER TABLE audit_logs ALTER COLUMN user_id TYPE VARCHAR(64);",
+                    "ALTER TABLE audit_logs ALTER COLUMN entity_id TYPE VARCHAR(64);"
+                ]
+                for stmt in alter_stmts:
+                    try:
+                        conn.execute(sa.text(stmt))
+                    except Exception:
+                        pass
+                conn.commit()
+    except Exception as e:
+        print(f"[Warning] Column widening check bypassed: {e}")
+
+    # Seed initial demo dataset (protected with rollback to ensure server startup succeeds)
     db = SessionLocal()
     try:
         seed_initial_data(db, reset=False)
+    except Exception as e:
+        print(f"[Warning] Seeding demo data encountered an error: {e}")
+        db.rollback()
     finally:
         db.close()
     yield

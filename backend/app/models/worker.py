@@ -7,8 +7,8 @@ from backend.app.database import Base
 class Worker(Base):
     __tablename__ = "workers"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = Column(String(36), ForeignKey("users.id"), nullable=False, unique=True)
+    id = Column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, unique=True)
     worker_code = Column(String(50), unique=True, index=True, nullable=False)
     full_name = Column(String(100), nullable=False)
     phone = Column(String(20), nullable=True)

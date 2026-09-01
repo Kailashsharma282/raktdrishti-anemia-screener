@@ -7,9 +7,9 @@ from backend.app.database import Base
 class Screening(Base):
     __tablename__ = "screenings"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    patient_id = Column(String(36), ForeignKey("patients.id"), nullable=False, index=True)
-    worker_id = Column(String(36), ForeignKey("workers.id"), nullable=True, index=True)
+    id = Column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    patient_id = Column(String(64), ForeignKey("patients.id"), nullable=False, index=True)
+    worker_id = Column(String(64), ForeignKey("workers.id"), nullable=True, index=True)
     screening_date = Column(DateTime, default=datetime.utcnow, nullable=False)
     device_id = Column(String(100), nullable=True)
     
@@ -43,8 +43,8 @@ class Screening(Base):
 class ScreeningImage(Base):
     __tablename__ = "screening_images"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    screening_id = Column(String(36), ForeignKey("screenings.id"), nullable=False, index=True)
+    id = Column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    screening_id = Column(String(64), ForeignKey("screenings.id"), nullable=False, index=True)
     site_type = Column(String(30), nullable=False)  # conjunctiva, nail, palm
     local_path = Column(String(255), nullable=True)
     cloud_path = Column(String(255), nullable=True)
@@ -61,8 +61,8 @@ class ScreeningImage(Base):
 class ScreeningPrediction(Base):
     __tablename__ = "screening_predictions"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    screening_id = Column(String(36), ForeignKey("screenings.id"), nullable=False, unique=True)
+    id = Column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    screening_id = Column(String(64), ForeignKey("screenings.id"), nullable=False, unique=True)
     model_name = Column(String(100), default="RaktDrishti-Fusion-Demo")
     model_version = Column(String(50), default="v1.0.0-mvp-demo")
     inference_timestamp = Column(DateTime, default=datetime.utcnow)
