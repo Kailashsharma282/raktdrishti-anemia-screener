@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function initNavigation() {
   document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', (e) => {
+      const target = item.dataset.tab;
+      if (!target) return; // Allow normal links like Mobile Screener (href) to open in new tab
       e.preventDefault();
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       item.classList.add('active');

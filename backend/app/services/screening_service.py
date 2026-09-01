@@ -81,14 +81,35 @@ class ScreeningService:
             if existing:
                 return existing
 
+        # Resolve patient_id if client passed patient_code or custom identifier
+        patient = db.query(Patient).filter(
+            (Patient.id == screening_in.patient_id) | (Patient.patient_code == screening_in.patient_id)
+        ).first()
+        if patient:
+            resolved_patient_id = patient.id
+        else:
+            new_patient = Patient(
+                id=str(uuid.uuid4()),
+                patient_code=screening_in.patient_id if screening_in.patient_id.startswith("RD-") else f"RD-{str(uuid.uuid4())[:8]}",
+                worker_id=worker_id,
+                name="Frontline Beneficiary",
+                age=25,
+                gender="female",
+                pregnancy_status="unknown",
+                village="Screening Camp"
+            )
+            db.add(new_patient)
+            db.flush()
+            resolved_patient_id = new_patient.id
+
         overall_quality = screening_in.overall_quality or round(
             (screening_in.conjunctiva_quality + screening_in.nail_quality + screening_in.palm_quality) / 3.0, 1
         )
         
         screening = Screening(
             id=screening_in.id or str(uuid.uuid4()),
-            patient_id=screening_in.patient_id,
-            worker_id=worker_id,
+            patient_id=resolved_patient_id,
+            worker_id=worker_id or (patient.worker_id if patient else None),
             screening_date=screening_in.screening_date or datetime.utcnow(),
             device_id=screening_in.device_id,
             conjunctiva_quality=screening_in.conjunctiva_quality,
