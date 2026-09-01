@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 class ReferralCreate(BaseModel):
     id: Optional[str] = None
-    screening_id: str
+    screening_id: Optional[str] = None
     patient_id: str
     referral_facility: str = Field(..., min_length=2, max_length=150)
     urgency: str = Field(default="high", pattern="^(routine|high|immediate)$")

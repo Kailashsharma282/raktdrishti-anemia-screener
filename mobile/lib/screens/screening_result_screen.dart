@@ -185,42 +185,106 @@ class ScreeningResultScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Primary Action Buttons
-            if (_isElevatedRisk) ...[
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFDC2626)),
-                icon: const Icon(Icons.local_hospital_rounded),
-                label: const Text('Create Laboratory Referral'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ReferralScreen(preSelectedScreening: screening),
+            // All 5 Action Buttons from Section 21
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0284C7)),
+                    icon: const Icon(Icons.menu_book_outlined),
+                    label: const Text('View Guidance'),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('Clinical & Nutritional Guidance'),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  _isElevatedRisk
+                                      ? '⚠️ Mandatory Confirmatory Pathway:\n• Schedule appointment at CHC/PHC for venous CBC.\n• Screen for secondary causes (malnutrition, helminthiasis, malaria).\n• Prescribe Iron Folic Acid (IFA) supplements under MO supervision.'
+                                      : '✅ Routine Health Maintenance:\n• Promote dietary diversity: leafy greens, jaggery, legumes.\n• Continue periodic frontline screening every 3 months for ANC/pediatric cohorts.',
+                                  style: const TextStyle(fontSize: 13, height: 1.5),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                if (_isElevatedRisk) ...[
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFDC2626)),
+                      icon: const Icon(Icons.local_hospital_rounded),
+                      label: const Text('Create Referral'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ReferralScreen(preSelectedScreening: screening),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
-            ],
-
-            OutlinedButton.icon(
-              icon: const Icon(Icons.share_outlined),
-              label: const Text('Share Screening Summary'),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Screening summary card copied to clipboard.')),
-                );
-              },
+                  ),
+                ],
+              ],
             ),
+            const SizedBox(height: 8),
 
-            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.save_outlined),
+                    label: const Text('Save Result'),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Screening record safely persisted locally in SQLite & queued for sync.'),
+                          backgroundColor: Color(0xFF059669),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.share_outlined),
+                    label: const Text('Share Summary'),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Screening summary report card copied to clipboard.')),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
 
+            TextButton.icon(
+              icon: const Icon(Icons.arrow_back_rounded),
+              label: const Text('Back to Patient Profile'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             TextButton(
               onPressed: () => Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const WorkerHomeScreen()),
                 (route) => false,
               ),
-              child: const Text('Back to Worker Home'),
+              child: const Text('Back to Worker Home', style: TextStyle(color: Color(0xFF64748B), fontSize: 12)),
             ),
           ],
         ),

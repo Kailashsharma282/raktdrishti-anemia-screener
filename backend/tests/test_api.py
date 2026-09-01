@@ -141,3 +141,109 @@ def test_demo_reset(client):
     response = client.post("/api/v1/demo/reset")
     assert response.status_code == 200
     assert response.json()["status"] == "success"
+
+def test_end_to_end_integration_flow(client):
+    """
+    Section 45 Integration Test:
+    Patient registration -> Screening -> Result -> Referral -> Offline storage -> Sync
+    """
+    # 1. Patient registration
+    patient_payload = {
+        "name": "Pooja Verma",
+        "age": 25,
+        "gender": "female",
+        "pregnancy_status": "pregnant",
+        "village": "Demo Village",
+        "phone": "+91-9123456780",
+        "notes": "First ANC visit screening."
+    }
+    p_res = client.post("/api/v1/patients", json=patient_payload)
+    assert p_res.status_code == 201
+    p_data = p_res.json()
+    patient_id = p_data["id"]
+    assert p_data["name"] == "Pooja Verma"
+
+    # 2. Screening creation & inference result
+    screening_payload = {
+        "patient_id": patient_id,
+        "conjunctiva_quality": 91.0,
+        "nail_quality": 89.5,
+        "palm_quality": 93.0,
+        "final_risk_category": "MODERATE",
+        "risk_score": 0.73,
+        "confidence": 0.88,
+        "images": [
+            {"site_type": "conjunctiva", "quality_score": 91.0, "calibration_detected": True},
+            {"site_type": "nail", "quality_score": 89.5, "calibration_detected": True},
+            {"site_type": "palm", "quality_score": 93.0, "calibration_detected": True}
+        ]
+    }
+    s_res = client.post("/api/v1/screenings", json=screening_payload)
+    assert s_res.status_code == 201
+    s_data = s_res.json()
+    screening_id = s_data["id"]
+    assert s_data["final_risk_category"] == "MODERATE"
+
+    # 3. Fetch screening result detail
+    s_detail = client.get(f"/api/v1/screenings/{screening_id}")
+    assert s_detail.status_code == 200
+    assert s_detail.json()["patient_name"] == "Pooja Verma"
+
+    # 4. Referral creation & update
+    ref_payload = {
+        "patient_id": patient_id,
+        "referral_facility": "Community Health Centre (CHC) Shivpur",
+        "urgency": "high",
+        "notes": "Moderate risk optical estimation during 1st ANC visit."
+    }
+    ref_res = client.post(f"/api/v1/screenings/{screening_id}/referral", json=ref_payload)
+    assert ref_res.status_code == 201
+    ref_id = ref_res.json()["id"]
+
+    patch_res = client.patch(
+        f"/api/v1/referrals/{ref_id}",
+        json={"status": "Lab Test Completed", "lab_confirmed_hb": 9.2}
+    )
+    assert patch_res.status_code == 200
+    assert patch_res.json()["status"] == "Lab Test Completed"
+    assert patch_res.json()["lab_confirmed_hb"] == 9.2
+
+    # 5. Offline Storage -> Sync Endpoint test
+    sync_payload = {
+        "device_id": "Integration-Test-Phone",
+        "client_timestamp": datetime.now().isoformat(),
+        "patients": [
+            {
+                "id": "p-offline-e2e-001",
+                "patient_code": "RD-OFFLINE-E2E",
+                "name": "Lalita Bai",
+                "age": 31,
+                "gender": "female",
+                "pregnancy_status": "not_pregnant",
+                "village": "Ramnagar"
+            }
+        ],
+        "screenings": [
+            {
+                "id": "sc-offline-e2e-001",
+                "patient_id": "p-offline-e2e-001",
+                "conjunctiva_quality": 88.0,
+                "nail_quality": 87.0,
+                "palm_quality": 90.0,
+                "final_risk_category": "NORMAL",
+                "risk_score": 0.21,
+                "confidence": 0.89
+            }
+        ],
+        "referrals": []
+    }
+    sync_res = client.post("/api/v1/sync", json=sync_payload)
+    assert sync_res.status_code == 200
+    assert sync_res.json()["synced_patients"] == 1
+    assert sync_res.json()["synced_screenings"] == 1
+
+    # 6. Verify dashboard KPIs updated
+    dash_res = client.get("/api/v1/dashboard/summary")
+    assert dash_res.status_code == 200
+    assert dash_res.json()["total_screenings"] >= 2
+

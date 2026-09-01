@@ -1,12 +1,22 @@
 /**
  * RaktDrishti Interactive Charts Engine
+ * Covers all 6 Section 33 Charts:
+ * 1. Risk distribution
+ * 2. Screenings over time
+ * 3. Referrals over time
+ * 4. Risk distribution by location
+ * 5. Age-group distribution
+ * 6. Pregnancy-status distribution
  */
 
 let riskChartInstance = null;
 let timelineChartInstance = null;
 let locationChartInstance = null;
 let ageChartInstance = null;
+let referralsTimelineInstance = null;
+let pregnancyChartInstance = null;
 
+// 1. Risk Distribution Chart
 function initRiskDistributionChart(data) {
   const ctx = document.getElementById('riskChart')?.getContext('2d');
   if (!ctx) return;
@@ -38,6 +48,7 @@ function initRiskDistributionChart(data) {
   });
 }
 
+// 2. Screenings Over Time Chart
 function initTimelineChart(timelineData) {
   const ctx = document.getElementById('timelineChart')?.getContext('2d');
   if (!ctx) return;
@@ -89,6 +100,47 @@ function initTimelineChart(timelineData) {
   });
 }
 
+// 3. Referrals Over Time Chart (Section 33.3)
+function initReferralsTimelineChart() {
+  const ctx = document.getElementById('referralsChart')?.getContext('2d');
+  if (!ctx) return;
+
+  if (referralsTimelineInstance) referralsTimelineInstance.destroy();
+
+  referralsTimelineInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['23 Aug', '24 Aug', '25 Aug', '26 Aug', '27 Aug', '28 Aug', '29 Aug'],
+      datasets: [
+        {
+          label: 'Referred to PHC/CHC',
+          data: [3, 5, 4, 7, 6, 8, 10],
+          backgroundColor: '#ef4444',
+          borderRadius: 4
+        },
+        {
+          label: 'Lab Confirmed Completed',
+          data: [2, 3, 4, 5, 5, 7, 8],
+          backgroundColor: '#10b981',
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+      },
+      plugins: {
+        legend: { labels: { color: '#94a3b8' } }
+      }
+    }
+  });
+}
+
+// 4. Risk Distribution by Location Chart (Section 33.4)
 function initLocationChart(locations) {
   const ctx = document.getElementById('locationChart')?.getContext('2d');
   if (!ctx) return;
@@ -132,6 +184,7 @@ function initLocationChart(locations) {
   });
 }
 
+// 5. Age-group distribution Chart (Section 33.5: 0–5, 6–12, 13–18, 19–30, 31–45, 46+)
 function initAgeDemographicsChart() {
   const ctx = document.getElementById('ageChart')?.getContext('2d');
   if (!ctx) return;
@@ -169,6 +222,38 @@ function initAgeDemographicsChart() {
       plugins: {
         legend: { labels: { color: '#94a3b8' } }
       }
+    }
+  });
+}
+
+// 6. Pregnancy-status distribution Chart (Section 33.6)
+function initPregnancyDistributionChart() {
+  const ctx = document.getElementById('pregnancyChart')?.getContext('2d');
+  if (!ctx) return;
+
+  if (pregnancyChartInstance) pregnancyChartInstance.destroy();
+
+  pregnancyChartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pregnant (ANC Elevated)', 'Pregnant (ANC Normal)', 'Non-Pregnant Women', 'General Adult'],
+      datasets: [{
+        data: [58, 42, 26, 14],
+        backgroundColor: ['#ef4444', '#10b981', '#f59e0b', '#3b82f6'],
+        borderWidth: 2,
+        borderColor: '#131f37'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#94a3b8', font: { family: 'Outfit', size: 11 } }
+        }
+      },
+      cutout: '65%'
     }
   });
 }

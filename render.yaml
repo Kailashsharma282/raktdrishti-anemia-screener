@@ -1,0 +1,40 @@
+services:
+  # 1. High-Performance FastAPI REST Server
+  - type: web
+    name: raktdrishti-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r backend/requirements.txt"
+    startCommand: "uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
+    autoDeploy: true
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "False"
+      - key: APP_NAME
+        value: "RaktDrishti"
+      - key: API_V1_PREFIX
+        value: "/api/v1"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: raktdrishti-postgres
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: '["*"]'
+
+databases:
+  # 2. Free Tier Managed PostgreSQL 15 Database
+  - name: raktdrishti-postgres
+    databaseName: raktdrishti_db
+    user: raktdrishti
+    region: oregon
+    plan: free

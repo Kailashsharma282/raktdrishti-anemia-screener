@@ -107,13 +107,29 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
 
             const SizedBox(height: 20),
 
+            // Section 35 Clinical Disclaimer
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFEF2F2),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xFFFECACA)),
+              ),
+              child: const Text(
+                'Notice: Do not imply that a trend is clinically meaningful unless supported by validated laboratory medical data.',
+                style: TextStyle(fontSize: 11, color: Color(0xFF991B1B), fontStyle: FontStyle.italic),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
             // Screening History Timeline Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Screening History & Risk Trends',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
+                  'Screening History & Risk Trends (Date | Risk | Conf | Referral)',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
                 ),
                 Text(
                   '${_screenings.length} Record(s)',

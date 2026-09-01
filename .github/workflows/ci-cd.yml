@@ -1,0 +1,85 @@
+name: RaktDrishti CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # =========================================================================
+  # 1. Automated Test Suite (Backend REST API & ML Model Evaluation)
+  # =========================================================================
+  test-and-validate:
+    name: Test Backend & ML Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run Pytest Suite (9 Integration & Unit Tests)
+        run: |
+          python -m pytest backend/tests/ -v
+
+      - name: Run ML Benchmark Evaluation
+        run: |
+          python ml/evaluation/evaluate.py
+
+  # =========================================================================
+  # 2. Trigger Render Backend Deployment
+  # =========================================================================
+  deploy-render:
+    name: Deploy Backend to Render
+    needs: test-and-validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Trigger Render Deploy Hook
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$RENDER_DEPLOY_HOOK" ]; then
+            echo "Triggering automated deployment on Render..."
+            curl -f -X POST "$RENDER_DEPLOY_HOOK"
+            echo "✓ Deployment hook triggered successfully."
+          else
+            echo "RENDER_DEPLOY_HOOK secret is not set in GitHub Repository Secrets."
+            echo "Render automatic Git deployment will trigger on commit push."
+          fi
+
+  # =========================================================================
+  # 3. Deploy Frontend & Screener to Vercel
+  # =========================================================================
+  deploy-vercel:
+    name: Deploy Frontend to Vercel
+    needs: test-and-validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel (CLI)
+        uses: amondnet/vercel-action@v25
+        if: env.VERCEL_TOKEN != ''
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

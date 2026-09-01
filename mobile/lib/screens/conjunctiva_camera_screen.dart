@@ -92,8 +92,8 @@ class _ConjunctivaCameraScreenState extends State<ConjunctivaCameraScreen> {
                 // Framing Overlay with Card Zone
                 FramingGuideOverlay(
                   title: 'Capture Inner Eyelid',
-                  anatomicalZone: '👁️ LOWER EYELID',
-                  instruction: '1. Patient looks upward. Gently pull down lower eyelid.\n2. Keep calibration card visible in corner.',
+                  anatomicalZone: '👁️ LOWER EYELID (CONJUNCTIVA)',
+                  instruction: '1. Wash hands • 2. Look upward • 3. Gently pull down lower eyelid\n4. Conjunctiva in guide • 5. Card visible • 6. Hold steady • 7. Capture',
                   isCardVisible: _cardDetected,
                   onCapture: _isProcessing ? () {} : _onCapture,
                 ),

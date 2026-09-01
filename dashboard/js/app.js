@@ -1,4 +1,7 @@
-const API_BASE = window.location.port === '8080' ? '/api/v1' : 'http://localhost:8080/api/v1';
+const API_BASE = window.RENDER_API_BASE
+  || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? (window.location.port === '8000' || window.location.port === '8080' ? '/api/v1' : 'http://localhost:8000/api/v1')
+      : '/api/v1');
 
 let currentTab = 'overview';
 let cachedPatients = [];
@@ -55,6 +58,8 @@ async function loadAllDashboardData() {
       const demo = await demoRes.json();
       initTimelineChart(demo.timeline);
       initAgeDemographicsChart();
+      initReferralsTimelineChart();
+      initPregnancyDistributionChart();
     }
 
     // 4. Locations
@@ -76,16 +81,21 @@ async function loadAllDashboardData() {
     initTimelineChart();
     initLocationChart();
     initAgeDemographicsChart();
+    initReferralsTimelineChart();
+    initPregnancyDistributionChart();
   }
 }
 
 function updateKPICounters(data) {
-  document.getElementById('kpiTotalPatients').textContent = data.total_patients || 5;
-  document.getElementById('kpiTotalScreenings').textContent = data.total_screenings || 5;
-  document.getElementById('kpiSevereCount').textContent = data.high_count || 1;
-  document.getElementById('kpiModerateCount').textContent = data.moderate_count || 1;
-  document.getElementById('kpiNormalCount').textContent = data.normal_count || 2;
-  document.getElementById('kpiPendingReferrals').textContent = data.pending_referrals || 2;
+  if (document.getElementById('kpiTotalPatients')) document.getElementById('kpiTotalPatients').textContent = data.total_patients || 5;
+  if (document.getElementById('kpiTotalScreenings')) document.getElementById('kpiTotalScreenings').textContent = data.total_screenings || 5;
+  if (document.getElementById('kpiNormalCount')) document.getElementById('kpiNormalCount').textContent = data.normal_count || 2;
+  if (document.getElementById('kpiMildCount')) document.getElementById('kpiMildCount').textContent = data.mild_count || 1;
+  if (document.getElementById('kpiModerateCount')) document.getElementById('kpiModerateCount').textContent = data.moderate_count || 1;
+  if (document.getElementById('kpiSevereCount')) document.getElementById('kpiSevereCount').textContent = data.high_count || 1;
+  if (document.getElementById('kpiPendingReferrals')) document.getElementById('kpiPendingReferrals').textContent = data.pending_referrals || 2;
+  if (document.getElementById('kpiPendingSync')) document.getElementById('kpiPendingSync').textContent = data.pending_sync || 0;
+  if (document.getElementById('badgeHighRiskCount')) document.getElementById('badgeHighRiskCount').textContent = (data.high_count || 1) + (data.moderate_count || 1);
 }
 
 async function loadPatients() {
@@ -166,6 +176,34 @@ function renderScreeningsTable(screenings) {
       </tr>
     `;
   }).join('');
+
+  // Populate High-Risk dedicated table (Section 31)
+  const highRiskTbody = document.getElementById('highRiskTableBody');
+  if (highRiskTbody) {
+    const highRiskCases = screenings.filter(s => s.final_risk_category === 'SEVERE' || s.final_risk_category === 'MODERATE');
+    if (highRiskCases.length === 0) {
+      highRiskTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#64748b;">No high or moderate risk cases detected</td></tr>';
+    } else {
+      highRiskTbody.innerHTML = highRiskCases.map(s => {
+        const date = new Date(s.screening_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        return `
+          <tr>
+            <td>${date}</td>
+            <td><strong>${s.patient_name}</strong></td>
+            <td><span class="badge badge-${s.final_risk_category.toLowerCase()}">${s.final_risk_category}</span></td>
+            <td><strong style="color:${s.final_risk_category === 'SEVERE' ? '#f87171' : '#fb923c'}">${Math.round(s.risk_score * 100)}%</strong></td>
+            <td>${Math.round(s.confidence * 100)}%</td>
+            <td>${s.overall_quality}%</td>
+            <td>
+              <span class="badge" style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid #ef4444;">
+                ${s.referral_status || 'Referral Advised'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
 }
 
 async function loadReferrals() {

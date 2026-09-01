@@ -48,22 +48,42 @@
           </a>
         </li>
         <li>
+          <a class="nav-item" data-tab="highrisk">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>High-risk Cases</span>
+            <span class="badge-count" style="background:rgba(239,68,68,0.2);color:#f87171;" id="badgeHighRiskCount">2</span>
+          </a>
+        </li>
+        <li>
           <a class="nav-item" data-tab="referrals">
             <i class="fa-solid fa-hospital-user"></i>
-            <span>Lab Referrals</span>
-            <span class="badge-count" style="background:rgba(239,68,68,0.2);color:#f87171;" id="badgeReferralCount">2</span>
+            <span>Referrals</span>
+            <span class="badge-count" style="background:rgba(168,85,247,0.2);color:#c084fc;" id="badgeReferralCount">2</span>
           </a>
         </li>
         <li>
           <a class="nav-item" data-tab="locations">
             <i class="fa-solid fa-map-location-dot"></i>
-            <span>Village Heatmap</span>
+            <span>Locations</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="analytics">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Analytics</span>
           </a>
         </li>
         <li>
           <a class="nav-item" data-tab="simulator">
             <i class="fa-solid fa-flask-vial"></i>
             <span>Live ML Simulator</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" href="screener.html" target="_blank" style="background:rgba(2,132,199,0.15);border:1px dashed #0284c7;color:#38bdf8;margin-top:6px;">
+            <i class="fa-solid fa-mobile-screen-button" style="color:#38bdf8;"></i>
+            <span>Mobile Screener App</span>
+            <span class="brand-badge" style="background:rgba(2,132,199,0.25);color:#7dd3fc;border:none;">WEB</span>
           </a>
         </li>
       </ul>
@@ -91,11 +111,11 @@
         </div>
 
         <div class="header-actions">
+          <button class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7, #0369a1);box-shadow:0 4px 12px rgba(2,132,199,0.35);" onclick="window.open('screener.html', '_blank')">
+            <i class="fa-solid fa-mobile-screen-button"></i> Launch Mobile Screener Web App
+          </button>
           <button class="btn btn-outline" onclick="window.open('../assets/calibration/raktdrishti_calibration_card.pdf', '_blank')">
             <i class="fa-solid fa-file-pdf"></i> Calibration Card PDF
-          </button>
-          <button class="btn btn-primary" onclick="document.querySelector('.nav-item[data-tab=\'simulator\']').click()">
-            <i class="fa-solid fa-camera"></i> Test Live Screening
           </button>
         </div>
       </header>
@@ -112,11 +132,11 @@
 
         <!-- 1. TAB VIEW: OVERVIEW -->
         <div id="view-overview" class="tab-view">
-          <!-- KPI Summary Cards -->
-          <div class="kpi-grid">
+          <!-- 8 KPI Summary Cards (Section 32) -->
+          <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
             <div class="kpi-card" style="--accent:#3b82f6;">
               <div class="kpi-header">
-                <span class="kpi-title">TOTAL BENEFICIARIES</span>
+                <span class="kpi-title">TOTAL PATIENTS</span>
                 <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
               </div>
               <div class="kpi-value" id="kpiTotalPatients">5</div>
@@ -129,16 +149,25 @@
                 <div class="kpi-icon"><i class="fa-solid fa-clipboard-check"></i></div>
               </div>
               <div class="kpi-value" id="kpiTotalScreenings">5</div>
-              <div class="kpi-subtitle">Multi-site optical evaluations</div>
+              <div class="kpi-subtitle">Multi-site optical checks</div>
             </div>
 
-            <div class="kpi-card" style="--accent:#ef4444;">
+            <div class="kpi-card" style="--accent:#10b981;">
               <div class="kpi-header">
-                <span class="kpi-title">SEVERE RISK CASES</span>
-                <div class="kpi-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <span class="kpi-title">NORMAL</span>
+                <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
               </div>
-              <div class="kpi-value" id="kpiSevereCount" style="color:#f87171;">1</div>
-              <div class="kpi-subtitle">Urgent hospital triage mandated</div>
+              <div class="kpi-value" id="kpiNormalCount" style="color:#34d399;">2</div>
+              <div class="kpi-subtitle">Routine dietary monitoring</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#f59e0b;">
+              <div class="kpi-header">
+                <span class="kpi-title">MILD RISK</span>
+                <div class="kpi-icon"><i class="fa-solid fa-info-circle"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiMildCount" style="color:#fbbf24;">1</div>
+              <div class="kpi-subtitle">Nutritional counseling</div>
             </div>
 
             <div class="kpi-card" style="--accent:#f97316;">
@@ -150,22 +179,31 @@
               <div class="kpi-subtitle">Referred to CHC for CBC</div>
             </div>
 
-            <div class="kpi-card" style="--accent:#10b981;">
+            <div class="kpi-card" style="--accent:#ef4444;">
               <div class="kpi-header">
-                <span class="kpi-title">NORMAL RISK</span>
-                <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <span class="kpi-title">HIGH RISK</span>
+                <div class="kpi-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
               </div>
-              <div class="kpi-value" id="kpiNormalCount" style="color:#34d399;">2</div>
-              <div class="kpi-subtitle">Routine dietary monitoring</div>
+              <div class="kpi-value" id="kpiSevereCount" style="color:#f87171;">1</div>
+              <div class="kpi-subtitle">Hospital triage mandated</div>
             </div>
 
             <div class="kpi-card" style="--accent:#8b5cf6;">
               <div class="kpi-header">
-                <span class="kpi-title">ACTIVE REFERRALS</span>
+                <span class="kpi-title">PENDING REFERRALS</span>
                 <div class="kpi-icon"><i class="fa-solid fa-hospital"></i></div>
               </div>
               <div class="kpi-value" id="kpiPendingReferrals" style="color:#c084fc;">2</div>
-              <div class="kpi-subtitle">PHC/CHC verification pending</div>
+              <div class="kpi-subtitle">Awaiting laboratory Hb</div>
+            </div>
+
+            <div class="kpi-card" style="--accent:#64748b;">
+              <div class="kpi-header">
+                <span class="kpi-title">PENDING SYNC</span>
+                <div class="kpi-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiPendingSync" style="color:#94a3b8;">0</div>
+              <div class="kpi-subtitle">All devices synchronized</div>
             </div>
           </div>
 
@@ -339,7 +377,37 @@
           </div>
         </div>
 
-        <!-- 4. TAB VIEW: REFERRALS -->
+        <!-- 4. TAB VIEW: HIGH-RISK CASES (Section 31) -->
+        <div id="view-highrisk" class="tab-view" style="display:none;">
+          <div class="table-card">
+            <div class="table-header">
+              <div>
+                <h2 style="font-size:18px;font-weight:700;color:#f87171;">⚠️ High & Moderate Risk Triage Queue</h2>
+                <span style="font-size:12px;color:#94a3b8;">Beneficiaries flagged for confirmatory laboratory venous blood testing</span>
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Beneficiary</th>
+                    <th>Risk Category</th>
+                    <th>Risk Score</th>
+                    <th>Confidence</th>
+                    <th>Quality</th>
+                    <th>Referral Action</th>
+                  </tr>
+                </thead>
+                <tbody id="highRiskTableBody">
+                  <!-- Dynamically populated with moderate/severe only -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. TAB VIEW: REFERRALS -->
         <div id="view-referrals" class="tab-view" style="display:none;">
           <div class="table-card">
             <div class="table-header">
@@ -395,7 +463,82 @@
           </div>
         </div>
 
-        <!-- 6. TAB VIEW: SIMULATOR -->
+        <!-- 6. TAB VIEW: ANALYTICS (Section 31 & 33) -->
+        <div id="view-analytics" class="tab-view" style="display:none;">
+          <div style="margin-bottom:20px;">
+            <h2 style="font-size:20px;font-weight:800;color:white;">Epidemiological Intelligence & Demographic Analytics</h2>
+            <p style="font-size:13px;color:#94a3b8;">Population health surveillance, risk trends over time, age distributions, and maternal vulnerability monitoring.</p>
+          </div>
+
+          <!-- 6 Section 33 Charts Grid -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">1. Population Risk Distribution</div>
+                <span style="font-size:12px;color:#94a3b8;">Normal / Mild / Mod / Severe (%)</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="riskChartAnalytics"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">2. Screenings Activity Over Time</div>
+                <span style="font-size:12px;color:#94a3b8;">Daily Triage Velocity</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="timelineChartAnalytics"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="charts-grid" style="margin-top:20px;">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">3. Referrals & Lab Confirmation Over Time</div>
+                <span style="font-size:12px;color:#94a3b8;">Hospital Triage Follow-up</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="referralsChart"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">4. Risk Distribution by Location</div>
+                <span style="font-size:12px;color:#94a3b8;">Village & Ward Comparison</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="locationChartAnalytics"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="charts-grid" style="margin-top:20px;">
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">5. Anemia Risk by Age Groups</div>
+                <span style="font-size:12px;color:#94a3b8;">0–5, 6–12, 13–18, 19–30, 31–45, 46+</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="ageChartAnalytics"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">6. Maternal (ANC) & Pregnancy Status Risk</div>
+                <span style="font-size:12px;color:#94a3b8;">Maternal Vulnerability Stratification</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="pregnancyChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. TAB VIEW: SIMULATOR -->
         <div id="view-simulator" class="tab-view" style="display:none;">
           <!-- Simulator Dedicated View -->
           <div class="simulator-card" style="margin-bottom:0;">

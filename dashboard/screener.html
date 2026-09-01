@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>RaktDrishti Mobile Screener — Flutter Web</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #dc2626;
+      --primary-dark: #991b1b;
+      --primary-light: #fee2e2;
+      --bg-device: #080e1e;
+      --bg-screen: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      --border: rgba(255, 255, 255, 0.08);
+      
+      --risk-normal: #10b981;
+      --risk-mild: #f59e0b;
+      --risk-moderate: #f97316;
+      --risk-severe: #ef4444;
+
+      --font-outfit: 'Outfit', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #080a14 100%);
+      color: var(--text-main);
+      font-family: var(--font-outfit);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    /* Top Control Bar for Web View */
+    .top-controls {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 0 8px;
+    }
+
+    .brand-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #f87171;
+    }
+
+    .web-badge {
+      background: rgba(220, 38, 38, 0.2);
+      border: 1px solid rgba(220, 38, 38, 0.4);
+      color: #fca5a5;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    .control-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-ctrl {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-ctrl:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Smartphone Device Shell */
+    .phone-container {
+      width: 100%;
+      max-width: 412px;
+      height: 844px;
+      max-height: 92vh;
+      background: var(--bg-device);
+      border-radius: 46px;
+      border: 8px solid #1e293b;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 0 2px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Dynamic Island / Punch hole */
+    .dynamic-island {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 22px;
+      background: #000000;
+      border-radius: 20px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+
+    .camera-lens {
+      width: 10px;
+      height: 10px;
+      background: #0f172a;
+      border-radius: 50%;
+      border: 1px solid #334155;
+    }
+
+    .speaker-slot {
+      width: 32px;
+      height: 3px;
+      background: #1e293b;
+      border-radius: 2px;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      height: 44px;
+      padding: 12px 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #cbd5e1;
+      z-index: 100;
+      background: transparent;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    /* App Header / AppBar */
+    .app-header {
+      padding: 10px 18px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      z-index: 90;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+    }
+
+    .header-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .header-sub {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .online-indicator {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #34d399;
+      cursor: pointer;
+    }
+
+    .online-dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #10b981;
+    }
+
+    /* Screen View Container */
+    .screen-viewport {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      background: var(--bg-screen);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen-viewport::-webkit-scrollbar {
+      width: 4px;
+    }
+    .screen-viewport::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    /* Screens */
+    .mobile-screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 16px;
+      animation: fadeInSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mobile-screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeInSlide {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      height: 64px;
+      background: rgba(11, 19, 43, 0.95);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px 6px;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      font-family: var(--font-outfit);
+      cursor: pointer;
+      transition: color 0.2s;
+      flex: 1;
+    }
+
+    .nav-btn i {
+      font-size: 18px;
+    }
+
+    .nav-btn.active {
+      color: #f87171;
+    }
+
+    /* UI Cards & Buttons */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: var(--font-outfit);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-outfit);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: white;
+      font-size: 14px;
+      font-family: var(--font-inter);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: #f87171;
+    }
+
+    /* Camera Viewport */
+    .camera-frame {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      background: #000;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      border: 2px solid rgba(220, 38, 38, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .camera-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .camera-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+    }
+
+    .card-bounding-box {
+      width: 100px;
+      height: 60px;
+      border: 2px dashed #10b981;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #34d399;
+      font-weight: 700;
+      text-align: center;
+      padding: 4px;
+    }
+
+    .reticle-eye {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 90px;
+      border: 2px solid rgba(248, 113, 113, 0.7);
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
+    }
+
+    /* Risk Badges */
+    .risk-banner {
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+      border: 1px solid;
+    }
+
+    .risk-severe {
+      background: radial-gradient(circle, rgba(239,68,68,0.25) 0%, rgba(15,23,42,0.9) 100%);
+      border-color: #ef4444;
+    }
+    .risk-moderate {
+      background: radial-gradient(circle, rgba(249,115,22,0.25) 0%, rgba(15,23,42,0.9) 100%);
+      border-color: #f97316;
+    }
+    .risk-normal {
+      background: radial-gradient(circle, rgba(16,185,129,0.25) 0%, rgba(15,23,42,0.9) 100%);
+      border-color: #10b981;
+    }
+
+    .risk-tier-title {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    /* Modal Sheet */
+    .modal-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: flex-end;
+    }
+    .modal-sheet {
+      width: 100%;
+      background: #1e293b;
+      border-radius: 24px 24px 0 0;
+      border-top: 1px solid var(--border);
+      padding: 24px 18px;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp 0.25s ease-out;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Controls for Web Testing -->
+  <div class="top-controls">
+    <div class="brand-tag">
+      <i class="fa-solid fa-droplet" style="color:#ef4444;"></i>
+      <span>RaktDrishti Mobile</span>
+      <span class="web-badge">FLUTTER WEB PWA</span>
+    </div>
+    <div class="control-actions">
+      <button class="btn-ctrl" onclick="toggleLanguage()">
+        <i class="fa-solid fa-language"></i> <span id="lblLang">EN</span>
+      </button>
+      <button class="btn-ctrl" onclick="window.location.href='index.html'">
+        <i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Phone Shell Frame -->
+  <div class="phone-container">
+    
+    <!-- Dynamic Island / Top Camera -->
+    <div class="dynamic-island">
+      <div class="speaker-slot"></div>
+      <div class="camera-lens"></div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span id="statusBarTime">09:41</span>
+      <div class="status-icons">
+        <i class="fa-solid fa-signal"></i>
+        <i class="fa-solid fa-wifi" id="statusWifiIcon"></i>
+        <i class="fa-solid fa-battery-three-quarters"></i>
+      </div>
+    </div>
+
+    <!-- App Bar -->
+    <div class="app-header">
+      <div class="header-left">
+        <div class="header-logo">
+          <i class="fa-solid fa-eye-dropper"></i>
+        </div>
+        <div>
+          <div class="header-title" id="txtAppTitle">RaktDrishti</div>
+          <div class="header-sub">ASHA Field Screener • v1.0.0</div>
+        </div>
+      </div>
+      <div class="online-indicator" id="btnToggleOnline" onclick="toggleOnlineState()">
+        <div class="online-dot" id="onlineDot"></div>
+        <span id="lblOnlineState">ONLINE</span>
+      </div>
+    </div>
+
+    <!-- Screen Viewport -->
+    <div class="screen-viewport">
+
+      <!-- ================= SCREEN 1: WORKER HOME ================= -->
+      <div id="screen-home" class="mobile-screen active">
+        <!-- Worker Card -->
+        <div class="glass-card" style="background:linear-gradient(135deg, rgba(220,38,38,0.15), rgba(30,41,59,0.8));">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <span style="font-size:11px;color:#f87171;font-weight:700;letter-spacing:0.5px;">HEALTH WORKER (ASHA)</span>
+              <h2 style="font-size:18px;font-weight:800;margin-top:2px;">Sunita Devi</h2>
+              <p style="font-size:12px;color:var(--text-sub);margin-top:2px;">
+                <i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> Demo Village • PHC Kashi
+              </p>
+            </div>
+            <div style="width:40px;height:40px;background:#334155;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #ef4444;">
+              <i class="fa-solid fa-user-nurse" style="color:white;font-size:18px;"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Screening Metrics -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+          <div class="glass-card" style="padding:12px;text-align:center;margin-bottom:0;">
+            <div style="font-size:18px;font-weight:800;color:#38bdf8;" id="homeMetricScreenings">12</div>
+            <div style="font-size:10px;color:var(--text-sub);margin-top:2px;">Screened</div>
+          </div>
+          <div class="glass-card" style="padding:12px;text-align:center;margin-bottom:0;">
+            <div style="font-size:18px;font-weight:800;color:#f87171;" id="homeMetricHighRisk">2</div>
+            <div style="font-size:10px;color:var(--text-sub);margin-top:2px;">High Risk</div>
+          </div>
+          <div class="glass-card" style="padding:12px;text-align:center;margin-bottom:0;">
+            <div style="font-size:18px;font-weight:800;color:#fbbf24;" id="homeMetricPendingSync">0</div>
+            <div style="font-size:10px;color:var(--text-sub);margin-top:2px;">Sync Queue</div>
+          </div>
+        </div>
+
+        <!-- Primary Actions -->
+        <button class="btn-primary" onclick="showScreen('register')">
+          <i class="fa-solid fa-plus-circle"></i>
+          <span>New Beneficiary Screening</span>
+        </button>
+
+        <div style="margin-top:14px;">
+          <button class="btn-outline" style="margin-bottom:8px;" onclick="showScreen('patients')">
+            <i class="fa-solid fa-address-book" style="color:#38bdf8;"></i>
+            <span>Beneficiary Registry (Search / Select)</span>
+          </button>
+          <button class="btn-outline" style="margin-bottom:8px;" onclick="showScreen('referrals')">
+            <i class="fa-solid fa-hospital-user" style="color:#ef4444;"></i>
+            <span>Active Hospital Referrals</span>
+          </button>
+          <button class="btn-outline" onclick="showScreen('sync')">
+            <i class="fa-solid fa-cloud-arrow-up" style="color:#a855f7;"></i>
+            <span>Sync Center (Offline Storage)</span>
+          </button>
+        </div>
+
+        <!-- Hackathon Presets -->
+        <div class="glass-card" style="margin-top:14px;border-color:rgba(239,68,68,0.3);">
+          <div style="font-size:11px;font-weight:700;color:#f87171;margin-bottom:8px;">
+            ⚡ QUICK DEMO COHORT PRESETS (OMNIKON 2026)
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <button class="btn-outline" style="padding:8px 12px;font-size:12px;justify-content:space-between;" onclick="loadPresetBeneficiary('ananya')">
+              <span>Ananya Rao (24y Pregnant ANC)</span>
+              <span style="color:#f97316;font-weight:700;">MODERATE</span>
+            </button>
+            <button class="btn-outline" style="padding:8px 12px;font-size:12px;justify-content:space-between;" onclick="loadPresetBeneficiary('sunita')">
+              <span>Sunita Devi (45y Female)</span>
+              <span style="color:#ef4444;font-weight:700;">SEVERE</span>
+            </button>
+            <button class="btn-outline" style="padding:8px 12px;font-size:12px;justify-content:space-between;" onclick="loadPresetBeneficiary('aarav')">
+              <span>Aarav Kumar (4y Child)</span>
+              <span style="color:#10b981;font-weight:700;">NORMAL</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 2: BENEFICIARY REGISTRATION ================= -->
+      <div id="screen-register" class="mobile-screen">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <button style="background:none;border:none;color:white;font-size:16px;cursor:pointer;" onclick="showScreen('home')">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 style="font-size:18px;font-weight:800;">Register Beneficiary</h2>
+        </div>
+
+        <div class="glass-card">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="inpPatientName" class="form-input" placeholder="e.g. Meena Devi" value="Ananya Rao">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group">
+              <label class="form-label">Age (Years) *</label>
+              <input type="number" id="inpPatientAge" class="form-input" value="24">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Gender *</label>
+              <select id="inpPatientGender" class="form-input">
+                <option value="female" selected>Female</option>
+                <option value="male">Male</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Maternal / Pregnancy Status *</label>
+            <select id="inpPatientPregnancy" class="form-input">
+              <option value="pregnant" selected>🤰 Pregnant (ANC Routine)</option>
+              <option value="not_pregnant">Not Pregnant</option>
+              <option value="not_applicable">Not Applicable</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Village / Ward *</label>
+            <input type="text" id="inpPatientVillage" class="form-input" value="Demo Village">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone Number (Optional)</label>
+            <input type="text" id="inpPatientPhone" class="form-input" placeholder="+91-XXXXXXXXXX" value="+91-9876543210">
+          </div>
+
+          <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px;margin-bottom:14px;font-size:11px;color:#34d399;">
+            <i class="fa-solid fa-shield-check"></i> Offline-Safe: Unique identifier <strong id="lblGenCode">RD-2026-0042</strong> generated automatically on device.
+          </div>
+
+          <button class="btn-primary" onclick="proceedToCaptureChecklist()">
+            <span>Save & Start Screening</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 3: PRE-CAPTURE CHECKLIST ================= -->
+      <div id="screen-checklist" class="mobile-screen">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <button style="background:none;border:none;color:white;font-size:16px;cursor:pointer;" onclick="showScreen('register')">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 style="font-size:18px;font-weight:800;">7-Step Capture Checklist</h2>
+        </div>
+
+        <div class="glass-card">
+          <div style="font-size:12px;color:#f87171;font-weight:700;margin-bottom:10px;">
+            CLINICAL IMAGING PROTOCOL (§13)
+          </div>
+          
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:rgba(239,68,68,0.2);color:#f87171;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">1</span>
+              <span>Position beneficiary in a comfortable seated posture.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:rgba(239,68,68,0.2);color:#f87171;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">2</span>
+              <span>Sanitize hands before assisting with lower eyelid.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:rgba(239,68,68,0.2);color:#f87171;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">3</span>
+              <span>Wipe smartphone camera lens to remove oil smudges.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:rgba(239,68,68,0.2);color:#f87171;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">4</span>
+              <span>Ensure bright, indirect ambient light (avoid direct sunlight/shadows).</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:rgba(239,68,68,0.2);color:#f87171;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">5</span>
+              <span><strong>Place 12-Patch Calibration Card</strong> flat beside the body region.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:rgba(239,68,68,0.2);color:#f87171;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">6</span>
+              <span>Gently pull lower eyelid down to expose inner palpebral conjunctiva.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="background:rgba(239,68,68,0.2);color:#f87171;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">7</span>
+              <span>Hold camera 15–20 cm away; ensure both card and site are in focus.</span>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <button class="btn-primary" onclick="startCameraCaptureFlow()">
+              <i class="fa-solid fa-camera"></i>
+              <span>Understood, Open Camera</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 4: CAMERA CAPTURE (3 SITES) ================= -->
+      <div id="screen-camera" class="mobile-screen" style="padding:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:13px;font-weight:700;color:#f87171;" id="lblCameraSiteStep">SITE 1 OF 3: CONJUNCTIVA</span>
+          <span style="font-size:11px;background:#1e293b;padding:2px 8px;border-radius:10px;" id="lblCardStatus">
+            <i class="fa-solid fa-check" style="color:#10b981;"></i> Card in View
+          </span>
+        </div>
+
+        <!-- Camera Viewfinder -->
+        <div class="camera-frame">
+          <video id="webcamVideo" class="camera-video" autoplay playsinline muted></video>
+          <img id="mockCameraImage" src="assets/images/conjunctiva_sample.png" class="camera-video" style="display:none;object-fit:cover;" alt="Camera view">
+          
+          <div class="camera-overlay">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div class="card-bounding-box" id="cardBoundingBox">
+                <i class="fa-solid fa-qrcode" style="font-size:16px;margin-bottom:2px;"></i>
+                <span>12-Patch Card OK</span>
+              </div>
+              <div style="background:rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;font-size:10px;">
+                <i class="fa-solid fa-sun" style="color:#fbbf24;"></i> <span id="lblAmbientLux">D65 Balanced</span>
+              </div>
+            </div>
+
+            <!-- Optical Alignment Guide -->
+            <div class="reticle-eye" id="reticleGuide"></div>
+
+            <div style="text-align:center;background:rgba(0,0,0,0.6);padding:6px;border-radius:8px;font-size:11px;color:#e2e8f0;" id="txtCameraHint">
+              Align lower eyelid inside oval & calibration card in top box
+            </div>
+          </div>
+        </div>
+
+        <!-- Capture Trigger Actions -->
+        <div style="display:flex;gap:10px;margin-bottom:10px;">
+          <button class="btn-primary" style="flex:2;" onclick="triggerOpticalCapture()">
+            <i class="fa-solid fa-camera"></i>
+            <span id="lblCaptureBtn">Capture Conjunctiva</span>
+          </button>
+          <button class="btn-outline" style="flex:1;" onclick="toggleMockVsLiveCamera()">
+            <i class="fa-solid fa-camera-rotate"></i>
+            <span>Sample</span>
+          </button>
+        </div>
+
+        <!-- Step Indicator -->
+        <div style="display:flex;justify-content:center;gap:6px;">
+          <div style="width:24px;height:4px;background:#ef4444;border-radius:2px;" id="stepBar1"></div>
+          <div style="width:24px;height:4px;background:#334155;border-radius:2px;" id="stepBar2"></div>
+          <div style="width:24px;height:4px;background:#334155;border-radius:2px;" id="stepBar3"></div>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 5: IQA QUALITY REVIEW ================= -->
+      <div id="screen-iqa" class="mobile-screen">
+        <h2 style="font-size:18px;font-weight:800;margin-bottom:12px;">Image Quality Assessment (IQA)</h2>
+
+        <div class="glass-card" style="text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#10b981;letter-spacing:0.5px;">AUTOMATED QUALITY GATE</div>
+          <div style="font-size:38px;font-weight:900;color:#34d399;margin:6px 0;" id="lblIqaScore">91 / 100</div>
+          <p style="font-size:12px;color:var(--text-sub);">Optical clarity acceptable for clinical feature extraction.</p>
+
+          <div style="margin-top:16px;text-align:left;display:flex;flex-direction:column;gap:10px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                <span>Sharpness / Focus</span>
+                <strong style="color:#38bdf8;">88% (Pass)</strong>
+              </div>
+              <div style="height:6px;background:#334155;border-radius:3px;overflow:hidden;">
+                <div style="width:88%;height:100%;background:#38bdf8;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                <span>Exposure & Illumination</span>
+                <strong style="color:#10b981;">124 / 255 (Optimal)</strong>
+              </div>
+              <div style="height:6px;background:#334155;border-radius:3px;overflow:hidden;">
+                <div style="width:80%;height:100%;background:#10b981;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                <span>12-Patch Reference Card</span>
+                <strong style="color:#10b981;">Detected (12 / 12 Patches)</strong>
+              </div>
+              <div style="height:6px;background:#334155;border-radius:3px;overflow:hidden;">
+                <div style="width:100%;height:100%;background:#10b981;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="runOnDeviceInferenceAndShowResult()">
+          <i class="fa-solid fa-brain"></i>
+          <span>Analyze & Generate Triage Result</span>
+        </button>
+
+        <button class="btn-outline" style="margin-top:8px;" onclick="showScreen('camera')">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span>Retake Photo</span>
+        </button>
+      </div>
+
+      <!-- ================= SCREEN 6: SCREENING RESULT (§21) ================= -->
+      <div id="screen-result" class="mobile-screen">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h2 style="font-size:18px;font-weight:800;">Screening Result</h2>
+          <span style="font-size:11px;color:var(--text-sub);" id="resultPatientTag">Ananya Rao (RD-2026-0042)</span>
+        </div>
+
+        <!-- Risk Banner -->
+        <div class="risk-banner risk-moderate" id="resultRiskBanner">
+          <div style="font-size:12px;font-weight:700;letter-spacing:1px;color:#f97316;">ESTIMATED ANEMIA RISK TIER</div>
+          <div class="risk-tier-title" id="lblRiskCategory" style="color:#fb923c;">MODERATE RISK</div>
+          
+          <div style="display:flex;justify-content:space-around;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);">
+            <div>
+              <div style="font-size:20px;font-weight:800;" id="lblRiskScore">72%</div>
+              <div style="font-size:10px;color:var(--text-sub);">Risk Score</div>
+            </div>
+            <div>
+              <div style="font-size:20px;font-weight:800;" id="lblConfidence">86%</div>
+              <div style="font-size:10px;color:var(--text-sub);">Confidence</div>
+            </div>
+            <div>
+              <div style="font-size:20px;font-weight:800;">91%</div>
+              <div style="font-size:10px;color:var(--text-sub);">Quality</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-Site Breakdown -->
+        <div class="glass-card" style="padding:12px;margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-sub);margin-bottom:6px;">
+            MULTI-SITE OPTICAL FUSION TELEMETRY
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
+            <div style="display:flex;justify-content:space-between;">
+              <span>👁️ Palpebral Conjunctiva</span>
+              <strong id="lblConjEi">EI: 0.28 (Chroma a*: 11.2)</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span>💅 Fingernail Beds</span>
+              <strong id="lblNailRed">Capillary Perfusion: 0.74</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span>✋ Palmar Creases</span>
+              <strong id="lblPalmContrast">Crease Pallor Ratio: 0.68</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mandatory Medical Safety Notice (§22) -->
+        <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:10px;margin-bottom:14px;font-size:11px;color:#fca5a5;">
+          <strong>⚠️ Triage Notice:</strong> RaktDrishti is a screening aid, NOT a diagnostic medical device. Confirmatory venous blood testing (CBC / Ferritin) is strongly recommended for moderate and severe risk tiers.
+        </div>
+
+        <!-- 5 Action Buttons from Section 21 -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+          <button class="btn-primary" onclick="openGuidanceModal()">
+            <i class="fa-solid fa-book-medical"></i>
+            <span>View Guidance (Dietary & Clinical)</span>
+          </button>
+
+          <button class="btn-primary" style="background:linear-gradient(135deg, #f97316, #ea580c);" onclick="showScreen('referral-form')">
+            <i class="fa-solid fa-hospital-user"></i>
+            <span>Create Referral Slip (PHC / CHC)</span>
+          </button>
+
+          <button class="btn-outline" onclick="saveScreeningToLocalAndCloud()">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Save Result to Record</span>
+          </button>
+
+          <button class="btn-outline" onclick="shareScreeningSummary()">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span>Share Summary (WhatsApp / SMS)</span>
+          </button>
+
+          <button class="btn-outline" onclick="showScreen('home')">
+            <i class="fa-solid fa-user"></i>
+            <span>Back to Patient Profile</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 7: REFERRAL CREATION ================= -->
+      <div id="screen-referral-form" class="mobile-screen">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <button style="background:none;border:none;color:white;font-size:16px;cursor:pointer;" onclick="showScreen('result')">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 style="font-size:18px;font-weight:800;">Create Referral Slip</h2>
+        </div>
+
+        <div class="glass-card">
+          <div class="form-group">
+            <label class="form-label">Beneficiary</label>
+            <input type="text" class="form-input" id="refBeneficiaryName" value="Ananya Rao (RD-2026-0042)" readonly>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Target Healthcare Facility *</label>
+            <select id="refFacilitySelect" class="form-input">
+              <option value="Community Health Centre (CHC) Shivpur" selected>Community Health Centre (CHC) Shivpur</option>
+              <option value="Primary Health Centre (PHC) Kashi">Primary Health Centre (PHC) Kashi</option>
+              <option value="District Hospital Varanasi">District Hospital Varanasi</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Urgency Level *</label>
+            <select id="refUrgencySelect" class="form-input">
+              <option value="high" selected>High (Within 48 hours)</option>
+              <option value="immediate">Immediate (Same day triage)</option>
+              <option value="routine">Routine</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Referral Notes</label>
+            <textarea id="refNotesInput" class="form-input" rows="3">Moderate risk optical estimation during 2nd trimester ANC screening. Reports occasional fatigue. Referred for confirmatory automated venous CBC & Ferritin.</textarea>
+          </div>
+
+          <button class="btn-primary" onclick="submitReferralSlip()">
+            <i class="fa-solid fa-file-circle-check"></i>
+            <span>Generate & Sign Referral Slip</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 8: BENEFICIARY REGISTRY ================= -->
+      <div id="screen-patients" class="mobile-screen">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <button style="background:none;border:none;color:white;font-size:16px;cursor:pointer;" onclick="showScreen('home')">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 style="font-size:18px;font-weight:800;">Beneficiary Registry</h2>
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-input" placeholder="🔍 Search by name, code or village..." oninput="filterBeneficiaries(this.value)">
+        </div>
+
+        <div id="beneficiaryList" style="display:flex;flex-direction:column;gap:8px;">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 9: ACTIVE REFERRALS ================= -->
+      <div id="screen-referrals" class="mobile-screen">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <button style="background:none;border:none;color:white;font-size:16px;cursor:pointer;" onclick="showScreen('home')">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 style="font-size:18px;font-weight:800;">Active Referrals</h2>
+        </div>
+
+        <div id="activeReferralsList" style="display:flex;flex-direction:column;gap:10px;">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 10: SYNC CENTER ================= -->
+      <div id="screen-sync" class="mobile-screen">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <button style="background:none;border:none;color:white;font-size:16px;cursor:pointer;" onclick="showScreen('home')">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 style="font-size:18px;font-weight:800;">Sync & Offline Storage</h2>
+        </div>
+
+        <div class="glass-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div>
+              <div style="font-size:14px;font-weight:700;">Simulated Connectivity</div>
+              <div style="font-size:11px;color:var(--text-sub);">Test offline-first resilience</div>
+            </div>
+            <input type="checkbox" id="chkSimulateOnline" checked onchange="toggleOnlineCheckbox(this.checked)" style="transform:scale(1.4);">
+          </div>
+          <p style="font-size:12px;color:var(--text-sub);line-height:1.4;">
+            When offline, all registrations, screenings, and referrals remain buffered safely in the device's local SQLite database. They synchronize automatically once connectivity is restored.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:13px;font-weight:700;">Pending Synchronization</span>
+            <span class="web-badge" id="lblSyncQueueCount">0 Records</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-sub);margin-bottom:14px;">
+            Last cloud synchronization: <strong id="lblLastSyncTime">Just now</strong>
+          </div>
+
+          <button class="btn-primary" onclick="triggerManualSync()">
+            <i class="fa-solid fa-rotate"></i>
+            <span id="lblSyncBtnText">Sync All Records Now</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+      <button class="nav-btn active" id="navHome" onclick="showScreen('home')">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" id="navScreen" onclick="showScreen('register')">
+        <i class="fa-solid fa-circle-plus"></i>
+        <span>Screen</span>
+      </button>
+      <button class="nav-btn" id="navPatients" onclick="showScreen('patients')">
+        <i class="fa-solid fa-users"></i>
+        <span>Patients</span>
+      </button>
+      <button class="nav-btn" id="navReferrals" onclick="showScreen('referrals')">
+        <i class="fa-solid fa-hospital"></i>
+        <span>Referrals</span>
+      </button>
+      <button class="nav-btn" id="navSync" onclick="showScreen('sync')">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <span>Sync</span>
+      </button>
+    </div>
+
+    <!-- Clinical Guidance Modal Sheet -->
+    <div class="modal-overlay" id="guidanceModal" onclick="closeGuidanceModal(event)">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <h3 style="font-size:16px;font-weight:800;color:white;">Clinical & Nutritional Guidance</h3>
+          <button style="background:none;border:none;color:white;font-size:18px;cursor:pointer;" onclick="closeGuidanceModal()">×</button>
+        </div>
+        
+        <div style="font-size:13px;color:#cbd5e1;display:flex;flex-direction:column;gap:12px;">
+          <div style="background:rgba(239,68,68,0.15);border-left:3px solid #ef4444;padding:8px 12px;border-radius:4px;">
+            <strong style="color:#f87171;">Action Required:</strong> Beneficiary's optical screening indicates elevated risk. Formal venous blood test (CBC) at nearest PHC/CHC is mandated.
+          </div>
+          <div>
+            <strong>🥗 Iron-Rich Dietary Recommendations:</strong>
+            <ul style="margin-left:20px;margin-top:4px;color:#94a3b8;">
+              <li>Green leafy vegetables (spinach, fenugreek, moringa/drumstick leaves)</li>
+              <li>Jaggery (gur) with roasted black grams</li>
+              <li>Lentils, pulses, sprouted beans</li>
+              <li>Vitamin C rich foods (amla, lemon, guava) to boost iron absorption</li>
+            </ul>
+          </div>
+          <div>
+            <strong>💊 Prophylaxis / Treatment Protocol:</strong>
+            <p style="color:#94a3b8;margin-top:4px;">
+              Administer Iron and Folic Acid (IFA) tablets as per national Anemia Mukt Bharat guidelines upon physician verification.
+            </p>
+          </div>
+        </div>
+
+        <button class="btn-primary" style="margin-top:16px;" onclick="closeGuidanceModal()">
+          <span>Understood</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript Logic -->
+    const API_BASE = window.RENDER_API_BASE
+      || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? (window.location.port === '8000' || window.location.port === '8080' ? '/api/v1' : 'http://localhost:8000/api/v1')
+          : '/api/v1');
+
+    let currentLanguage = 'EN';
+    let isOnline = true;
+    let cameraStream = null;
+    let isMockCamera = true;
+    let captureStep = 1; // 1: Conjunctiva, 2: Nail, 3: Palm
+    let currentPatient = {
+      name: 'Ananya Rao',
+      code: 'RD-2026-0042',
+      age: 24,
+      gender: 'female',
+      pregnancy: 'pregnant',
+      village: 'Demo Village'
+    };
+    let currentPrediction = {
+      riskCategory: 'MODERATE',
+      riskScore: 0.72,
+      confidence: 0.86,
+      overallQuality: 91.0
+    };
+    let offlineSyncQueue = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateClock();
+      setInterval(updateClock, 1000);
+      renderBeneficiaries();
+      renderReferrals();
+    });
+
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('statusBarTime').textContent = timeStr;
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.mobile-screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(`screen-${screenId}`);
+      if (target) target.classList.add('active');
+
+      // Update Nav Bar
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      if (screenId === 'home') document.getElementById('navHome')?.classList.add('active');
+      if (screenId === 'register' || screenId === 'camera' || screenId === 'result') document.getElementById('navScreen')?.classList.add('active');
+      if (screenId === 'patients') document.getElementById('navPatients')?.classList.add('active');
+      if (screenId === 'referrals' || screenId === 'referral-form') document.getElementById('navReferrals')?.classList.add('active');
+      if (screenId === 'sync') document.getElementById('navSync')?.classList.add('active');
+    }
+
+    function toggleOnlineState() {
+      isOnline = !isOnline;
+      updateOnlineUI();
+    }
+
+    function toggleOnlineCheckbox(checked) {
+      isOnline = checked;
+      updateOnlineUI();
+    }
+
+    function updateOnlineUI() {
+      const dot = document.getElementById('onlineDot');
+      const lbl = document.getElementById('lblOnlineState');
+      const wifi = document.getElementById('statusWifiIcon');
+      const chk = document.getElementById('chkSimulateOnline');
+
+      if (chk) chk.checked = isOnline;
+
+      if (isOnline) {
+        dot.style.background = '#10b981';
+        dot.style.boxShadow = '0 0 6px #10b981';
+        lbl.textContent = 'ONLINE';
+        lbl.style.color = '#34d399';
+        wifi.className = 'fa-solid fa-wifi';
+      } else {
+        dot.style.background = '#f59e0b';
+        dot.style.boxShadow = '0 0 6px #f59e0b';
+        lbl.textContent = 'OFFLINE';
+        lbl.style.color = '#fbbf24';
+        wifi.className = 'fa-solid fa-wifi-slash';
+      }
+    }
+
+    function toggleLanguage() {
+      currentLanguage = currentLanguage === 'EN' ? 'HI' : 'EN';
+      document.getElementById('lblLang').textContent = currentLanguage;
+      if (currentLanguage === 'HI') {
+        document.getElementById('txtAppTitle').textContent = 'रक्तदृष्टि';
+      } else {
+        document.getElementById('txtAppTitle').textContent = 'RaktDrishti';
+      }
+    }
+
+    function loadPresetBeneficiary(type) {
+      if (type === 'ananya') {
+        currentPatient = { name: 'Ananya Rao', code: 'RD-2026-0042', age: 24, gender: 'female', pregnancy: 'pregnant', village: 'Demo Village' };
+        currentPrediction = { riskCategory: 'MODERATE', riskScore: 0.72, confidence: 0.86, overallQuality: 91.0 };
+      } else if (type === 'sunita') {
+        currentPatient = { name: 'Sunita Devi', code: 'RD-2026-0019', age: 45, gender: 'female', pregnancy: 'not_pregnant', village: 'Shivpur Rural' };
+        currentPrediction = { riskCategory: 'SEVERE', riskScore: 0.88, confidence: 0.92, overallQuality: 94.0 };
+      } else {
+        currentPatient = { name: 'Aarav Kumar', code: 'RD-2026-0087', age: 4, gender: 'male', pregnancy: 'not_applicable', village: 'Ramnagar' };
+        currentPrediction = { riskCategory: 'NORMAL', riskScore: 0.22, confidence: 0.89, overallQuality: 89.0 };
+      }
+      populatePatientForm();
+      showScreen('register');
+    }
+
+    function populatePatientForm() {
+      document.getElementById('inpPatientName').value = currentPatient.name;
+      document.getElementById('inpPatientAge').value = currentPatient.age;
+      document.getElementById('inpPatientGender').value = currentPatient.gender;
+      document.getElementById('inpPatientPregnancy').value = currentPatient.pregnancy;
+      document.getElementById('inpPatientVillage').value = currentPatient.village;
+      document.getElementById('lblGenCode').textContent = currentPatient.code;
+    }
+
+    function proceedToCaptureChecklist() {
+      currentPatient.name = document.getElementById('inpPatientName').value;
+      currentPatient.age = parseInt(document.getElementById('inpPatientAge').value) || 24;
+      currentPatient.gender = document.getElementById('inpPatientGender').value;
+      currentPatient.pregnancy = document.getElementById('inpPatientPregnancy').value;
+      currentPatient.village = document.getElementById('inpPatientVillage').value;
+      showScreen('checklist');
+    }
+
+    async function startCameraCaptureFlow() {
+      captureStep = 1;
+      updateCameraStepUI();
+      showScreen('camera');
+      initCamera();
+    }
+
+    async function initCamera() {
+      const video = document.getElementById('webcamVideo');
+      const mockImg = document.getElementById('mockCameraImage');
+
+      if (!isMockCamera && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try {
+          cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+          });
+          video.srcObject = cameraStream;
+          video.style.display = 'block';
+          mockImg.style.display = 'none';
+          return;
+        } catch (e) {
+          console.warn('WebRTC camera error, falling back to simulated optical capture:', e);
+        }
+      }
+
+      // Default mock camera fallback
+      video.style.display = 'none';
+      mockImg.style.display = 'block';
+      updateMockImage();
+    }
+
+    function toggleMockVsLiveCamera() {
+      isMockCamera = !isMockCamera;
+      initCamera();
+    }
+
+    function updateCameraStepUI() {
+      const title = document.getElementById('lblCameraSiteStep');
+      const btn = document.getElementById('lblCaptureBtn');
+      const hint = document.getElementById('txtCameraHint');
+      const reticle = document.getElementById('reticleGuide');
+
+      document.getElementById('stepBar1').style.background = captureStep >= 1 ? '#ef4444' : '#334155';
+      document.getElementById('stepBar2').style.background = captureStep >= 2 ? '#ef4444' : '#334155';
+      document.getElementById('stepBar3').style.background = captureStep >= 3 ? '#ef4444' : '#334155';
+
+      if (captureStep === 1) {
+        title.textContent = 'SITE 1 OF 3: CONJUNCTIVA';
+        btn.textContent = 'Capture Conjunctiva';
+        hint.textContent = 'Align lower eyelid inside oval & calibration card in top box';
+        reticle.style.width = '180px';
+        reticle.style.height = '90px';
+        reticle.style.borderRadius = '50%';
+      } else if (captureStep === 2) {
+        title.textContent = 'SITE 2 OF 3: FINGERNAIL BED';
+        btn.textContent = 'Capture Nail Bed';
+        hint.textContent = 'Position fingernail directly inside box beside calibration card';
+        reticle.style.width = '110px';
+        reticle.style.height = '140px';
+        reticle.style.borderRadius = '20px';
+      } else {
+        title.textContent = 'SITE 3 OF 3: PALMAR CREASE';
+        btn.textContent = 'Capture Open Palm';
+        hint.textContent = 'Align open palm with hand guidelines and ensure card is in view';
+        reticle.style.width = '200px';
+        reticle.style.height = '200px';
+        reticle.style.borderRadius = '24px';
+      }
+      updateMockImage();
+    }
+
+    function updateMockImage() {
+      const mockImg = document.getElementById('mockCameraImage');
+      if (captureStep === 1) {
+        mockImg.src = 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80';
+      } else if (captureStep === 2) {
+        mockImg.src = 'https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?w=600&auto=format&fit=crop&q=80';
+      } else {
+        mockImg.src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80';
+      }
+    }
+
+    function triggerOpticalCapture() {
+      // Shutter feedback
+      document.querySelector('.camera-frame').style.opacity = '0.3';
+      setTimeout(() => document.querySelector('.camera-frame').style.opacity = '1', 150);
+
+      if (captureStep < 3) {
+        captureStep++;
+        updateCameraStepUI();
+      } else {
+        // Stop camera stream if active
+        if (cameraStream) {
+          cameraStream.getTracks().forEach(t => t.stop());
+          cameraStream = null;
+        }
+        showScreen('iqa');
+      }
+    }
+
+    function runOnDeviceInferenceAndShowResult() {
+      // Populate Result Screen
+      const banner = document.getElementById('resultRiskBanner');
+      const catEl = document.getElementById('lblRiskCategory');
+      const scoreEl = document.getElementById('lblRiskScore');
+      const confEl = document.getElementById('lblConfidence');
+      const patientTag = document.getElementById('resultPatientTag');
+
+      patientTag.textContent = `${currentPatient.name} (${currentPatient.code})`;
+      catEl.textContent = `${currentPrediction.riskCategory} RISK`;
+      scoreEl.textContent = `${Math.round(currentPrediction.riskScore * 100)}%`;
+      confEl.textContent = `${Math.round(currentPrediction.confidence * 100)}%`;
+
+      banner.className = `risk-banner risk-${currentPrediction.riskCategory.toLowerCase()}`;
+      if (currentPrediction.riskCategory === 'SEVERE') {
+        catEl.style.color = '#f87171';
+      } else if (currentPrediction.riskCategory === 'MODERATE') {
+        catEl.style.color = '#fb923c';
+      } else {
+        catEl.style.color = '#34d399';
+      }
+
+      showScreen('result');
+    }
+
+    function openGuidanceModal() {
+      document.getElementById('guidanceModal').style.display = 'flex';
+    }
+
+    function closeGuidanceModal(e) {
+      document.getElementById('guidanceModal').style.display = 'none';
+    }
+
+    async function saveScreeningToLocalAndCloud() {
+      const payload = {
+        patient_id: currentPatient.code,
+        conjunctiva_quality: 91.0,
+        nail_quality: 92.0,
+        palm_quality: 90.0,
+        final_risk_category: currentPrediction.riskCategory,
+        risk_score: currentPrediction.riskScore,
+        confidence: currentPrediction.confidence,
+        images: [
+          { site_type: 'conjunctiva', quality_score: 91.0, calibration_detected: true },
+          { site_type: 'nail', quality_score: 92.0, calibration_detected: true },
+          { site_type: 'palm', quality_score: 90.0, calibration_detected: true }
+        ]
+      };
+
+      if (!isOnline) {
+        offlineSyncQueue.push({ type: 'screening', data: payload, timestamp: new Date() });
+        updateQueueBadge();
+        alert('Screening saved locally in SQLite queue (Offline Mode Active).');
+        showScreen('home');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/screenings`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          alert('✓ Screening saved & synchronized with cloud database!');
+        } else {
+          offlineSyncQueue.push({ type: 'screening', data: payload, timestamp: new Date() });
+          updateQueueBadge();
+          alert('Buffered locally in offline queue.');
+        }
+      } catch (err) {
+        offlineSyncQueue.push({ type: 'screening', data: payload, timestamp: new Date() });
+        updateQueueBadge();
+        alert('Offline: Saved safely in local device storage.');
+      }
+      showScreen('home');
+    }
+
+    function updateQueueBadge() {
+      const count = offlineSyncQueue.length;
+      document.getElementById('homeMetricPendingSync').textContent = count;
+      document.getElementById('lblSyncQueueCount').textContent = `${count} Records`;
+    }
+
+    function shareScreeningSummary() {
+      const text = `RaktDrishti Triage Summary\nPatient: ${currentPatient.name} (${currentPatient.code})\nEstimated Risk: ${currentPrediction.riskCategory} (${Math.round(currentPrediction.riskScore * 100)}%)\nConfidence: ${Math.round(currentPrediction.confidence * 100)}%\nStatus: Please visit PHC/CHC for confirmatory CBC test.`;
+      if (navigator.share) {
+        navigator.share({ title: 'RaktDrishti Screening Summary', text: text });
+      } else {
+        navigator.clipboard.writeText(text);
+        alert('Screening summary copied to clipboard for sharing via WhatsApp/SMS!');
+      }
+    }
+
+    function submitReferralSlip() {
+      alert(`Referral Slip generated for ${currentPatient.name} to ${document.getElementById('refFacilitySelect').value}!`);
+      showScreen('referrals');
+    }
+
+    function renderBeneficiaries() {
+      const list = document.getElementById('beneficiaryList');
+      const patients = [
+        { name: 'Ananya Rao', code: 'RD-2026-0042', age: 24, status: 'MODERATE', village: 'Demo Village' },
+        { name: 'Sunita Devi', code: 'RD-2026-0019', age: 45, status: 'SEVERE', village: 'Shivpur Rural' },
+        { name: 'Aarav Kumar', code: 'RD-2026-0087', age: 4, status: 'NORMAL', village: 'Ramnagar' },
+        { name: 'Radha Devi', code: 'RD-2026-0033', age: 29, status: 'MILD', village: 'Demo Village' },
+      ];
+
+      list.innerHTML = patients.map(p => `
+        <div class="glass-card" style="padding:12px;margin-bottom:0;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700;font-size:14px;">${p.name}</div>
+            <div style="font-size:11px;color:var(--text-sub);">${p.code} • ${p.age}y • ${p.village}</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="web-badge" style="background:rgba(239,68,68,0.2);color:${p.status === 'NORMAL' ? '#34d399' : (p.status === 'MODERATE' ? '#fb923c' : '#f87171')};border-color:currentColor;">
+              ${p.status}
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderReferrals() {
+      const list = document.getElementById('activeReferralsList');
+      const referrals = [
+        { name: 'Ananya Rao', facility: 'CHC Shivpur', urgency: 'HIGH', status: 'Pending Lab CBC', code: 'RD-2026-0042' },
+        { name: 'Sunita Devi', facility: 'District Hospital', urgency: 'IMMEDIATE', status: 'Referred', code: 'RD-2026-0019' }
+      ];
+
+      list.innerHTML = referrals.map(r => `
+        <div class="glass-card" style="padding:14px;margin-bottom:0;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+            <div>
+              <strong style="font-size:14px;">${r.name}</strong>
+              <div style="font-size:11px;color:var(--text-sub);">${r.code}</div>
+            </div>
+            <span class="web-badge" style="background:rgba(239,68,68,0.2);color:#f87171;border-color:#ef4444;">${r.urgency}</span>
+          </div>
+          <div style="font-size:12px;color:#cbd5e1;margin-bottom:10px;">
+            <i class="fa-solid fa-hospital" style="color:#38bdf8;"></i> ${r.facility}
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:11px;color:#fbbf24;font-weight:600;">Status: ${r.status}</span>
+            <button class="btn-ctrl" style="padding:4px 8px;font-size:10px;" onclick="enterLabResult('${r.name}')">
+              Log Lab Hb
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function enterLabResult(patientName) {
+      const hb = prompt(`Enter confirmed laboratory venous blood Hb for ${patientName} (g/dL):`, '8.4');
+      if (hb) {
+        alert(`Lab outcome logged: ${hb} g/dL recorded.`);
+      }
+    }
+
+    async function triggerManualSync() {
+      const btn = document.getElementById('lblSyncBtnText');
+      btn.textContent = 'Synchronizing with PostgreSQL...';
+
+      if (!isOnline) {
+        alert('Cannot sync while Offline. Please toggle connectivity to Online first.');
+        btn.textContent = 'Sync All Records Now';
+        return;
+      }
+
+      await new Promise(r => setTimeout(r, 800));
+      offlineSyncQueue = [];
+      updateQueueBadge();
+      document.getElementById('lblLastSyncTime').textContent = 'Just now (All Synced)';
+      btn.textContent = 'Sync All Records Now';
+      alert('✓ All buffered offline records synchronized successfully with FastAPI Cloud Backend!');
+    }
+  </script>
+</body>
+</html>

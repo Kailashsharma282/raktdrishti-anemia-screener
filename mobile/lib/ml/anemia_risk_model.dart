@@ -8,6 +8,7 @@ class MLPredictionResult {
   final double overallQuality;
   final String modelName;
   final String modelVersion;
+  final DateTime inferenceTimestamp;
   final bool isDemoModel;
 
   MLPredictionResult({
@@ -18,8 +19,9 @@ class MLPredictionResult {
     required this.overallQuality,
     this.modelName = 'RaktDrishti-MultiSite-Fusion',
     this.modelVersion = 'v1.0.0-mvp-demo',
+    DateTime? inferenceTimestamp,
     this.isDemoModel = true,
-  });
+  }) : inferenceTimestamp = inferenceTimestamp ?? DateTime.now();
 }
 
 class AnemiaRiskModel {

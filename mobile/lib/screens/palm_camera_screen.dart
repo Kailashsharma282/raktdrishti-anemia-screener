@@ -92,7 +92,7 @@ class _PalmCameraScreenState extends State<PalmCameraScreen> {
                 FramingGuideOverlay(
                   title: 'Capture Palm',
                   anatomicalZone: '✋ OPEN PALM',
-                  instruction: '1. Open palm completely flat. Avoid harsh shadows.\n2. Place calibration card directly beside palm.',
+                  instruction: '• Open palm • Keep palm flat • Place calibration card beside palm\n• Avoid shadows • Hold phone steady • Capture',
                   isCardVisible: _cardDetected,
                   onCapture: _isProcessing ? () {} : _onCapture,
                 ),

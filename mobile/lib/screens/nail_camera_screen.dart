@@ -89,7 +89,7 @@ class _NailCameraScreenState extends State<NailCameraScreen> {
                 FramingGuideOverlay(
                   title: 'Capture Fingernails',
                   anatomicalZone: '💅 NAIL BEDS',
-                  instruction: '1. Place fingernails flat inside guide. Avoid pressing too hard.\n2. Keep calibration card visible in frame.',
+                  instruction: '• Place fingernails inside guide • Keep calibration card visible\n• Avoid harsh shadows • Keep hand steady • Capture multiple visible nails',
                   isCardVisible: _cardDetected,
                   onCapture: _isProcessing ? () {} : _onCapture,
                 ),
